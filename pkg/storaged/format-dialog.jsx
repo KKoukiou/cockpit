@@ -82,25 +82,17 @@ export function mounting_dialog_fields(is_custom, mount_dir, mount_options, visi
                             return _("Mount point can not be empty");
                     }
                   }),
-        CheckBox("mount_auto", _("Mount at boot"),
-                 { row_title: _("Mount options"),
-                   value: opt_auto,
-                   visible: function (vals) {
-                       return visible(vals) && vals.mounting == "custom";
-                   }
-                 }),
-        CheckBox("mount_ro", _("Mount read only"),
-                 { value: opt_ro,
-                   visible: function (vals) {
-                       return visible(vals) && vals.mounting == "custom";
-                   }
-                 }),
-        TextInputChecked("mount_extra_options", _("Custom mount options"),
-                         { value: extra_options == "" ? false : extra_options,
-                           visible: function (vals) {
-                               return visible(vals) && vals.mounting == "custom";
-                           }
-                         })
+        FieldSet("mount_options", _("Mount Options"),
+                { visible: function (vals) {
+                    return visible(vals) && vals.mounting == "custom";
+                },
+                fields: [
+                        { title: _("Mount at boot"), value: opt_auto, tag: "mount_auto", type: "checkbox" },
+                        { title: _("Mount read only"), value: opt_ro, tag: "mount_ro", type: "checkbox" },
+                        { title: _("Mount extra options"), value: extra_options === "" ? false : extra_options,
+                          tag: "mount_extra_options", type: "checkboxWithInput" },
+                    ]},
+                ),
     ];
 }
 

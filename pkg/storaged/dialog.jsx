@@ -219,6 +219,8 @@ import { show_modal_dialog } from "cockpit-components-dialog.jsx";
 import { StatelessSelect, SelectEntry } from "cockpit-components-select.jsx";
 import { fmt_size, block_name, format_size_and_text } from "./utils.js";
 
+import "form-layout.less";
+
 const _ = cockpit.gettext;
 
 const Validated = ({ errors, error_key, explanation, children }) => {
@@ -228,12 +230,25 @@ const Validated = ({ errors, error_key, explanation, children }) => {
     // class so that the input field keeps the focus when
     // errors are cleared.  Otherwise the DOM changes enough
     // for the Browser to remove focus.
-    return (
-        <div className={error ? "has-error" : ""}>
+    let validatedContent = (
+        <React.Fragment>
             { children }
             { (text && text !== true) ? <span className="help-block dialog-error">{text}</span> : null }
-        </div>
+        </React.Fragment>
     );
+    if (error) {
+        return (
+            <div className="has-error">
+                { validatedContent }
+            </div>
+        );
+    } else {
+        return (
+            <React.Fragment>
+                { validatedContent }
+            </React.Fragment>
+        );
+    };
 };
 
 const Row = ({ tag, title, errors, options, children }) => {
@@ -253,16 +268,14 @@ const Row = ({ tag, title, errors, options, children }) => {
                     </React.Fragment>
                 );
             return (
-                <tr>
-                    <td className="top">{title}</td>
-                    <td>{validated}</td>
-                </tr>
+                <React.Fragment>
+                    <label className="control-label">{title}</label>
+                    <React.Fragment>{validated}</React.Fragment>
+                </React.Fragment>
             );
         } else {
             return (
-                <tr>
-                    <td colSpan="2">{validated}</td>
-                </tr>
+                <React.Fragment>{validated}</React.Fragment>
             );
         }
     } else {
@@ -297,11 +310,9 @@ const Body = ({body, fields, values, errors, onChange}) => {
         <div className="modal-body">
             { body || null }
             { fields.length > 0
-                ? <table className="form-table-ct">
-                    <tbody>
-                        { fields.map(make_row) }
-                    </tbody>
-                </table> : null
+                ? <form className="ct-form-layout">
+                    { fields.map(make_row) }
+                </form> : null
             }
         </div>
     );
@@ -700,6 +711,54 @@ export const CheckBox = (tag, title, options) => {
                         {title}
                     </label>
                 </div>
+            );
+        }
+    };
+};
+
+export const FieldSet = (tag, title, options) => {
+    return {
+        tag: tag,
+        title: title || "",
+        options: {},
+        initial_value: null,
+
+        render: (val, change) => {
+            let fieldset = options.fields.map(field => {
+                if (field.type == "checkbox") {
+                    return (
+                        <div className="checkbox">
+                            <label key={field.tag}>
+                                <input type="checkbox" data-field={field.tag} data-field-type="checkbox"
+                                    checked={field.value}
+                                    onChange={event => change(event.target.checked)} />
+                                {field.title}
+                            </label>
+                        </div>
+                    );
+                } else if (field.type == "checkboxWithInput") {
+                    return (
+                        <React.Fragment>
+                            <div className="checkbox  ct-form-layout-split">
+                                <label>
+                                    <input type="checkbox" checked={field.value !== false}
+                                        onChange={event => change(event.target.checked ? "" : false)} />
+                                    {field.title}
+                                </label>
+                            </div>
+                            <input className="form-control ct-form-layout-split" type="text" hidden={field.value === false}
+                                   value={field.valye} onChange={event => change(event.target.value)} />
+                        </React.Fragment>
+                    );
+                }
+            });
+
+            return (
+                <React.Fragment>
+                    <fieldset>
+                        { fieldset }
+                    </fieldset>
+                </React.Fragment>
             );
         }
     };

@@ -23,7 +23,7 @@ import cockpit from "cockpit";
 import React from "react";
 import moment from "moment";
 
-import { dialog_open, TeardownMessage, TextInput, TextInputChecked, ComboBox, CheckBox } from "./dialog.jsx";
+import { dialog_open, TeardownMessage, TextInput, FieldSet } from "./dialog.jsx";
 import * as format from "./format-dialog.jsx";
 import { format_fsys_usage } from "./utils.js";
 
@@ -148,17 +148,16 @@ export function nfs_fstab_dialog(client, entry) {
                                                 },
                                                 disabled: busy
                                               }),
-                                    ComboBox("remote", _("Path on Server"),
-                                             { value: entry ? entry.fields[0].split(":")[1] : "",
-                                               validate: function (val) {
-                                                   if (val === "")
-                                                       return _("Path on server cannot be empty.");
-                                                   if (val[0] !== "/")
-                                                       return _("Path on server must start with \"/\".");
-                                               },
-                                               disabled: busy,
-                                               choices: [ ]
-                                             }),
+                                    TextInput("remote", _("Path on Server"),
+                                              { value: entry ? entry.fields[0].split(":")[1] : "",
+                                                validate: function (val) {
+                                                    if (val === "")
+                                                        return _("Path on server cannot be empty.");
+                                                    if (val[0] !== "/")
+                                                        return _("Path on server must start with \"/\".");
+                                                },
+                                                disabled: busy,
+                                              }),
                                     TextInput("dir", _("Local Mount Point"),
                                               { value: entry ? entry.fields[1] : "",
                                                 validate: function (val) {
@@ -169,14 +168,14 @@ export function nfs_fstab_dialog(client, entry) {
                                                 },
                                                 disabled: busy
                                               }),
-                                    CheckBox("mount_auto", _("Mount at boot"),
-                                             { row_title: _("Mount Options"),
-                                               value: opt_auto
-                                             }),
-                                    CheckBox("mount_ro", _("Mount read only"),
-                                             { value: opt_ro }),
-                                    TextInputChecked("mount_extra_options", _("Custom mount option"),
-                                                     { value: extra_options === "" ? false : extra_options })
+                                    FieldSet("mount_options", _("Mount Options"),
+                                             { fields: [
+                                                 { title: _("Mount at boot"), value: opt_auto, tag: "mount_auto", type: "checkbox" },
+                                                 { title: _("Mount read only"), value: opt_ro, tag: "mount_ro", type: "checkbox" },
+                                                 { title: _("Mount extra options"), value: extra_options === "" ? false : extra_options,
+                                                   tag: "mount_extra_options", type: "checkboxWithInput" },
+                                             ]},
+                                    ),
                                 ],
                                 update: (dlg, vals, trigger) => {
                                     if (trigger === "server")
