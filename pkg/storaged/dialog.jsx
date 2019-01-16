@@ -248,7 +248,7 @@ const Validated = ({ errors, error_key, explanation, children }) => {
                 { validatedContent }
             </React.Fragment>
         );
-    };
+    }
 };
 
 const Row = ({ tag, title, errors, options, children }) => {
@@ -719,19 +719,26 @@ export const CheckBox = (tag, title, options) => {
 export const FieldSet = (tag, title, options) => {
     return {
         tag: tag,
-        title: title || "",
-        options: {},
-        initial_value: null,
+        title: title,
+        options: options,
+        initial_value: options.value || { },
 
         render: (val, change) => {
             let fieldset = options.fields.map(field => {
+                let ftag = tag + "." + field.tag;
+                let fval = val[field.tag];
+                function fchange(newval) {
+                    val[field.tag] = newval;
+                    change(val);
+                }
+
                 if (field.type == "checkbox") {
                     return (
                         <div className="checkbox">
                             <label key={field.tag}>
-                                <input type="checkbox" data-field={field.tag} data-field-type="checkbox"
-                                    checked={field.value}
-                                    onChange={event => change(event.target.checked)} />
+                                <input type="checkbox" data-field={ftag} data-field-type="checkbox"
+                                    checked={fval}
+                                    onChange={event => fchange(event.target.checked)} />
                                 {field.title}
                             </label>
                         </div>
@@ -741,13 +748,13 @@ export const FieldSet = (tag, title, options) => {
                         <React.Fragment>
                             <div className="checkbox  ct-form-layout-split">
                                 <label>
-                                    <input type="checkbox" checked={field.value !== false}
-                                        onChange={event => change(event.target.checked ? "" : false)} />
+                                    <input type="checkbox" checked={fval !== false}
+                                        onChange={event => fchange(event.target.checked ? "" : false)} />
                                     {field.title}
                                 </label>
                             </div>
-                            <input className="form-control ct-form-layout-split" type="text" hidden={field.value === false}
-                                   value={field.valye} onChange={event => change(event.target.value)} />
+                            <input className="form-control ct-form-layout-split" type="text" hidden={fval === false}
+                                   value={fval} onChange={event => fchange(event.target.value)} />
                         </React.Fragment>
                     );
                 }

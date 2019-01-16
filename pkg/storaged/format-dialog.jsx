@@ -25,6 +25,7 @@ import * as utils from "./utils.js";
 import {
     dialog_open,
     TextInput, PassInput, CheckBox, SelectOne, TextInputChecked, SizeSlider,
+    FieldSet,
     BlockingMessage, TeardownMessage
 } from "./dialog.jsx";
 
@@ -83,27 +84,29 @@ export function mounting_dialog_fields(is_custom, mount_dir, mount_options, visi
                     }
                   }),
         FieldSet("mount_options", _("Mount Options"),
-                { visible: function (vals) {
-                    return visible(vals) && vals.mounting == "custom";
-                },
-                fields: [
-                        { title: _("Mount at boot"), value: opt_auto, tag: "mount_auto", type: "checkbox" },
-                        { title: _("Mount read only"), value: opt_ro, tag: "mount_ro", type: "checkbox" },
-                        { title: _("Mount extra options"), value: extra_options === "" ? false : extra_options,
-                          tag: "mount_extra_options", type: "checkboxWithInput" },
-                    ]},
-                ),
+                 { visible: function (vals) {
+                     return visible(vals) && vals.mounting == "custom";
+                 },
+                   value: { auto: opt_auto,
+                            ro: opt_ro,
+                            extra: extra_options === "" ? false : extra_options },
+                   fields: [
+                       { title: _("Mount at boot"), tag: "auto", type: "checkbox" },
+                       { title: _("Mount read only"), tag: "ro", type: "checkbox" },
+                       { title: _("Mount extra options"), tag: "extra", type: "checkboxWithInput" },
+                   ]},
+        ),
     ];
 }
 
 export function mounting_dialog_options(vals) {
     var opts = [ ];
-    if (!vals.mount_auto)
+    if (!vals.mount_options.auto)
         opts.push("noauto");
-    if (vals.mount_ro)
+    if (vals.mount_options.ro)
         opts.push("ro");
-    if (vals.mount_extra_options !== false)
-        opts = opts.concat(parse_options(vals.mount_extra_options));
+    if (vals.mount_options.extra !== false)
+        opts = opts.concat(parse_options(vals.mount_options.extra));
     return unparse_options(opts);
 }
 

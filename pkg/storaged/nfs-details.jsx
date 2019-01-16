@@ -99,12 +99,12 @@ export function nfs_fstab_dialog(client, entry) {
 
     function mounting_options(vals) {
         var opts = [ ];
-        if (!vals.mount_auto)
+        if (!vals.mount_options.auto)
             opts.push("noauto");
-        if (vals.mount_ro)
+        if (vals.mount_options.ro)
             opts.push("ro");
-        if (vals.mount_extra_options !== false)
-            opts = opts.concat(format.parse_options(vals.mount_extra_options));
+        if (vals.mount_options.extra !== false)
+            opts = opts.concat(format.parse_options(vals.mount_options.extra));
         return format.unparse_options(opts);
     }
 
@@ -170,11 +170,16 @@ export function nfs_fstab_dialog(client, entry) {
                                               }),
                                     FieldSet("mount_options", _("Mount Options"),
                                              { fields: [
-                                                 { title: _("Mount at boot"), value: opt_auto, tag: "mount_auto", type: "checkbox" },
-                                                 { title: _("Mount read only"), value: opt_ro, tag: "mount_ro", type: "checkbox" },
-                                                 { title: _("Mount extra options"), value: extra_options === "" ? false : extra_options,
-                                                   tag: "mount_extra_options", type: "checkboxWithInput" },
-                                             ]},
+                                                 { title: _("Mount at boot"), tag: "auto", type: "checkbox" },
+                                                 { title: _("Mount read only"), tag: "ro", type: "checkbox" },
+                                                 { title: _("Mount extra options"), tag: "extra", type: "checkboxWithInput" },
+                                             ],
+                                               value: {
+                                                   auto: opt_auto,
+                                                   ro: opt_ro,
+                                                   extra: extra_options === "" ? false : extra_options
+                                               }
+                                             },
                                     ),
                                 ],
                                 update: (dlg, vals, trigger) => {
