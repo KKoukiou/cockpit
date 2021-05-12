@@ -27,7 +27,7 @@ import {
     Card, CardTitle, CardBody, Gallery,
     DescriptionList, DescriptionListGroup, DescriptionListTerm, DescriptionListDescription,
     Flex, FlexItem,
-    Page, PageSection,
+    Page, PageSection, PageSectionVariants,
     Progress, ProgressVariant,
     Select, SelectOption,
     Tooltip,
@@ -1213,14 +1213,17 @@ class MetricsHistory extends React.Component {
 }
 
 export const Application = () => (
-    <Page groupProps={{ sticky: 'top' }}
-          isBreadcrumbGrouped
-          breadcrumb={
-              <Breadcrumb>
-                  <BreadcrumbItem onClick={() => cockpit.jump("/system")} to="#">{_("Overview")}</BreadcrumbItem>
-                  <BreadcrumbItem isActive>{_("Performance Metrics")}</BreadcrumbItem>
-              </Breadcrumb>
-          }>
+    <Page>
+        <PageSection variant={PageSectionVariants.light}>
+            <Flex>
+                <FlexItem>
+                    <Breadcrumb>
+                        <BreadcrumbItem onClick={() => cockpit.jump("/system")} to="#">{_("Overview")}</BreadcrumbItem>
+                        <BreadcrumbItem isActive>{_("Performance Metrics")}</BreadcrumbItem>
+                    </Breadcrumb>
+                </FlexItem>
+            </Flex>
+        </PageSection>
         <PageSection>
             <CurrentMetrics />
         </PageSection>
