@@ -491,17 +491,11 @@
 
 #pcp-settings-modal {
     .pcp-settings-modal-text {
-        padding-bottom: var(--pf-global--spacer--lg);
-
         // "Read more..." link
         a {
                 padding-left: 1em;
                 white-space: nowrap;
         }
-    }
-
-    .pcp-settings-modal-unitname {
-        color: var(--pf-global--disabled-color--100);
     }
 
     // leave some space for the focus rings

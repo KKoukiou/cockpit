@@ -32,7 +32,7 @@ import {
     Progress, ProgressVariant,
     Select, SelectOption,
     Switch,
-    Text, TextVariants,
+    Text, TextContent, TextVariants,
     Tooltip,
 } from '@patternfly/react-core';
 import { Table, TableHeader, TableBody, TableGridBreakpoint, TableVariant, TableText, RowWrapper, cellWidth } from '@patternfly/react-table';
@@ -920,6 +920,18 @@ const PCPConfig = ({ buttonVariant }) => {
                    id="pcp-settings-modal"
                    onClose={ () => setDialogVisible(false) }
                    title={ _("Metrics settings") }
+                   description={
+                       <div className="pcp-settings-modal-text">
+                           { _("Performance Co-Pilot collects and analyzes performance metrics from your system.") }
+
+                           <Button component="a" variant="link" href="https://pcp.io/"
+                                isInline
+                                target="_blank" rel="noopener noreferrer"
+                                icon={<ExternalLinkAltIcon />}>
+                               { _("Read more...") }
+                           </Button>
+                       </div>
+                   }
                    footer={<>
                        { dialogError && <ModalError dialogError={ _("Failed to configure PCP") } dialogErrorDetail={dialogError} /> }
 
@@ -931,28 +943,17 @@ const PCPConfig = ({ buttonVariant }) => {
                        </Button>
                    </>
                    }>
-
-                <Text component={TextVariants.p} className="pcp-settings-modal-text">
-                    { _("Performance Co-Pilot collects and analyzes performance metrics from your system.") }
-
-                    <a href="https://pcp.io/" target="_blank" rel="noopener noreferrer">
-                        <ExternalLinkAltIcon />&nbsp;{ _("Read more...") }
-                    </a>
-                </Text>
-
-                <Flex direction={{ default: 'column' }}>
-                    <Flex>
-                        <FlexItem>
-                            <Switch id="switch-pmlogger"
-                                    isChecked={dialogLoggerValue}
-                                    onChange={enable => setDialogLoggerValue(enable)} />
-                        </FlexItem>
-                        <FlexItem>{ _("Collect metrics") }</FlexItem>
-                        <FlexItem spacer={{ default: 'spacerXl' }}>
-                            <span className="pcp-settings-modal-unitname">(pmlogger.service)</span>
-                        </FlexItem>
-                    </Flex>
-                </Flex>
+                <Switch id="switch-pmlogger"
+                        isChecked={dialogLoggerValue}
+                        label={
+                            <Flex spaceItems={{ modifier: 'spaceItemsXl' }}>
+                                <FlexItem>{ _("Collect metrics") }</FlexItem>
+                                <TextContent>
+                                    <Text component={TextVariants.small}>(pmlogger.service)</Text>
+                                </TextContent>
+                            </Flex>
+                        }
+                        onChange={enable => setDialogLoggerValue(enable)} />
             </Modal>}
         </>);
 };
