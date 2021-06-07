@@ -515,3 +515,8 @@ td.storage-action {
 .crypto-keyslots-list {
     border: none;
 }
+
+// Holdover until PF is upgraded and we get pf-u-align-self-center and drop this
+.storage-align-self-center {
+    align-self: center;
+}
