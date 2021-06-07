@@ -484,8 +484,12 @@ td.storage-action {
     }
 }
 
-.sidepanel-row:not(.pf-c-empty-state):hover {
-    background-color: var(--ct-color-link-hover-bg);
+.sidepanel-row-name,
+.sidepanel-row-devname {
+    // Our version of PF4 is out of date at the moment, so we don't have
+    // pf-u-text-break-word yet. We should add the PF utility class to the
+    // elements in some future version of Cockpit.
+    word-break: break-word;
 }
 
 .sidepanel-row-name {
