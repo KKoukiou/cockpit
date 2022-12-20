@@ -275,7 +275,7 @@ export function AccountDetails({ accounts, groups, shadow, current_user, user })
                                     <output id="account-last-login">{last_login}</output>
                                 </FormGroup>
                                 <FormGroup fieldId="account-locked" label={_("Options")} hasNoPaddingTop>
-                                    <div>
+                                    <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                                         <div className="account-column-one">
                                             <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                                                 <Checkbox id="account-locked"
@@ -302,11 +302,11 @@ export function AccountDetails({ accounts, groups, shadow, current_user, user })
                                                 {_("edit")}
                                             </Button>
                                         </Flex>
-                                    </div>
+                                    </Flex>
                                 </FormGroup>
                                 { self_mod_allowed &&
                                 <FormGroup fieldId="account-set-password" label={_("Password")}>
-                                    <div>
+                                    <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
                                         <div className="account-column-one">
                                             { self_mod_allowed &&
                                             <Button variant="secondary" id="account-set-password"
@@ -334,7 +334,7 @@ export function AccountDetails({ accounts, groups, shadow, current_user, user })
                                                 {_("edit")}
                                             </Button>
                                         </Flex>
-                                    </div>
+                                    </Flex>
                                 </FormGroup>
                                 }
                             </Form>
