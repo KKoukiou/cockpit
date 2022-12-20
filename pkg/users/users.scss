@@ -4,9 +4,7 @@
 // Import utilities for `pf-u...` classes
 @import "@patternfly/patternfly/utilities/Spacing/spacing.css";
 @import "global-variables.scss";
-@import "@patternfly/patternfly/components/DataList/data-list.scss";
 @import "@patternfly/patternfly/components/Toolbar/toolbar.scss";
-@import "@patternfly/patternfly/layouts/Flex/flex.scss";
 
 #account .pf-c-card {
   @extend .ct-card;
