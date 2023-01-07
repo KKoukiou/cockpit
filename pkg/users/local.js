@@ -29,6 +29,7 @@ import { usePageLocation, useLoggedInUser, useFile } from "hooks.js";
 import { etc_passwd_syntax, etc_group_syntax } from "./parsers.js";
 import { AccountsMain } from "./accounts-list.js";
 import { AccountDetails } from "./account-details.js";
+import { GroupDetails } from "./group-details.js";
 
 superuser.reload_page_on_change();
 
@@ -82,12 +83,19 @@ function AccountsPage() {
 
     if (path.length === 0) {
         return <AccountsMain accountsInfo={accountsInfo} current_user={current_user_info && current_user_info.name} groups={groupsExtraInfo || []} />;
-    } else {
+    } else if (path.length === 1) {
         return (
             <AccountDetails accounts={accountsInfo} groups={groupsExtraInfo || []} shadow={shadow || []}
                             current_user={current_user_info && current_user_info.name} user={path[0]} />
         );
-    }
+    } else if (path.length === 2 && path[0] === "group" && groupsExtraInfo.length > 0 && accountsInfo.length > 0) {
+        const current_group = groupsExtraInfo.find(g => g.name == path[1]);
+        if (current_group) {
+            return (
+                <GroupDetails accounts={accountsInfo} groups={groupsExtraInfo} group={path[1]} />
+            );
+        }
+    } else return null;
 }
 
 function get_locked(name) {

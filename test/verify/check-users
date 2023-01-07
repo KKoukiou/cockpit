@@ -833,6 +833,58 @@ class TestAccounts(MachineCase):
         b.wait_not_present("#groups-create-dialog")
         b.wait_visible('#groups-list td[data-label="Group name"]:contains("saturn")')
 
+    def testGroupEdit(self):
+        b = self.browser
+        m = self.machine
+
+        m.execute("groupadd titan; useradd uranus; useradd gaea")
+
+        self.addCleanup(m.execute, "groupdel titan || true")
+        self.addCleanup(m.execute, "userdel uranus || true")
+
+        self.login_and_go("/users#/group/titan")
+        b.wait_val("#group-name", "titan")
+
+        # Change group name
+        b.set_input_text("#group-name", "phoebe")
+        b.blur("#group-name")
+        b.wait_js_cond('window.location.hash === "#/group/phoebe"')
+        self.assertIn("phoebe", m.execute("getent group"))
+        self.assertNotIn("titan", m.execute("getent group"))
+
+        def selectAccount(account, group, enabled):
+            if enabled:
+                wait(lambda: group not in m.execute(f"groups {account}"))
+            else:
+                wait(lambda: group in m.execute(f"groups {account}"))
+
+            b.click("#group-accounts")
+            b.click(f".pf-c-select__menu li:contains({account}) button")
+            if enabled:
+                b.wait_in_text(".pf-c-label-group__list", account)
+                b.wait_not_present(f".pf-c-select__menu li:contains({account}) button")
+                wait(lambda: group in m.execute(f"groups {account}"))
+            else:
+                b.wait_not_in_text(".pf-c-select", account)
+                wait(lambda: group not in m.execute(f"groups {account}"))
+
+        # Add user to group
+        selectAccount("uranus", "phoebe", True)
+        b.wait_not_present("#group-accounts-helper")
+
+        # Remove user to group
+        selectAccount("uranus", "phoebe", False)
+        b.wait_not_present("#group-accounts-helper")
+
+        # Undo account removal from group
+        b.click("#group-undo-btn")
+        b.wait_in_text(".pf-c-label-group__list", "uranus")
+        wait(lambda: "phoebe" in m.execute("groups uranus"))
+
+        # Add logged in user to group and expect warning
+        selectAccount("admin", "phoebe", True)
+        b.wait_visible("#group-accounts-helper")
+
 
 if __name__ == '__main__':
     test_main()

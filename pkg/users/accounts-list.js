@@ -51,10 +51,11 @@ const _ = cockpit.gettext;
 const GroupActions = ({ group, accounts }) => {
     const [isKebabOpen, setKebabOpen] = useState(false);
 
-    if (!superuser.allowed)
-        return null;
-
     const actions = [
+        <DropdownItem key="edit-group"
+                      onClick={ev => { ev.preventDefault(); cockpit.location.go(["group", group.name]) }}>
+            {_("Edit group")}
+        </DropdownItem>,
         <DropdownItem key="delete-group"
                       className={group.uid === 0 ? "" : "delete-resource-red"}
                       onClick={() => { setKebabOpen(false); delete_group_dialog(group) }}>
@@ -125,7 +126,14 @@ const getGroupRow = (group, accounts) => {
     const columns = [
         {
             sortKey: group.name,
-            title: <Flex alignItems={{ default: 'alignItemsCenter' }}><div className={"dot " + groupColorClass} /><FlexItem>{group.name}</FlexItem></Flex>,
+            title: (
+                <Flex alignItems={{ default: 'alignItemsCenter' }}>
+                    <div className={"dot " + groupColorClass} />
+                    <FlexItem>
+                        <a href={"#/group/" + group.name}>{group.name}</a>
+                    </FlexItem>
+                </Flex>
+            ),
             props: { width: 20, },
         },
         {
@@ -153,11 +161,16 @@ const getGroupRow = (group, accounts) => {
             ),
             props: { width: 60, },
         },
-        {
-            title: <GroupActions group={group} accounts={accounts} />,
-            props: { className: "pf-c-table__action" }
-        },
     ];
+
+    if (superuser.allowed) {
+        columns.push(
+            {
+                title: <GroupActions group={group} accounts={accounts} />,
+                props: { className: "pf-c-table__action" }
+            },
+        );
+    }
 
     return { columns, props: { key: group.gid } };
 };

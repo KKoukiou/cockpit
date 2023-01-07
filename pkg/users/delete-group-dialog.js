@@ -54,7 +54,8 @@ export function delete_group_dialog(group) {
                         prog.push("-f");
                     prog.push(group.name);
 
-                    return cockpit.spawn(prog, { superuser: "require", err: "message" });
+                    return cockpit.spawn(prog, { superuser: "require", err: "message" })
+                            .then(() => cockpit.location.go("/"));
                 }
             }
         ]
