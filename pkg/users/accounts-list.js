@@ -254,6 +254,7 @@ const mapGroupsToAccount = (accounts, groups) => {
 };
 
 const GroupsList = ({ groups, accounts }) => {
+    const [currentTextFilter, setCurrentTextFilter] = useState("");
     const [isExpanded, setIsExpanded] = useState(false);
     const columns = [
         { title: _("Group name"), sortable: true },
@@ -261,6 +262,14 @@ const GroupsList = ({ groups, accounts }) => {
         { title: _("# of users"), sortable: true },
         { title: _("Accounts") },
     ];
+    const filtered_groups = groups.filter(group => {
+        if (currentTextFilter !== "" &&
+            (group.name.toLowerCase().indexOf(currentTextFilter.toLowerCase()) === -1) &&
+            (group.gid.toString().indexOf(currentTextFilter.toLowerCase()) === -1))
+            return false;
+
+        return true;
+    });
 
     const sortRows = (rows, direction, idx) => {
         // GID and members columns are numeric
@@ -285,6 +294,30 @@ const GroupsList = ({ groups, accounts }) => {
         return direction === SortByDirection.asc ? sortedRows : sortedRows.reverse();
     };
 
+    const tableToolbar = (
+        <Toolbar>
+            <ToolbarContent className="groups-toolbar-header">
+                <ToolbarItem>
+                    <SearchInput id="groups-filter"
+                                 placeholder={_("Search for name or ID")}
+                                 value={currentTextFilter}
+                                 onChange={setCurrentTextFilter}
+                                 onClear={() => setCurrentTextFilter('')} />
+                </ToolbarItem>
+                { superuser.allowed &&
+                    <>
+                        <ToolbarItem variant="separator" />
+                        <ToolbarItem alignment={{ md: 'alignRight' }}>
+                            <Button id="groups-create" onClick={() => group_create_dialog(groups, setIsExpanded)}>
+                                {_("Create new group")}
+                            </Button>
+                        </ToolbarItem>
+                    </>
+                }
+            </ToolbarContent>
+        </Toolbar>
+    );
+
     return (
         <Card className="ct-card" isExpanded={isExpanded}>
             <CardHeader
@@ -298,8 +331,8 @@ const GroupsList = ({ groups, accounts }) => {
                 <CardTitle className="pf-l-flex pf-m-space-items-sm pf-m-align-items-center">
                     <Text component={TextVariants.h2}>{_("Groups")}</Text>
                     {(!isExpanded && !groups.length) && <HelperText> <HelperTextItem variant="indeterminate">{_("Loading...")}</HelperTextItem></HelperText>}
-                    {(!isExpanded && groups.length > 0) && <>
-                        {groups.slice(0, 3)
+                    {(!isExpanded && filtered_groups.length > 0) && <>
+                        {filtered_groups.slice(0, 3)
                                 .map(group => {
                                     const color = group.isAdmin ? "gold" : "cyan";
                                     return (
@@ -308,23 +341,22 @@ const GroupsList = ({ groups, accounts }) => {
                                         </Label>
                                     );
                                 })}
-                        <Button key="more" className="group-more-btn" isInline variant='link' onClick={() => setIsExpanded(!isExpanded)}>
-                            {cockpit.format(_("$0 more..."), groups.length - 3)}
-                        </Button>
+                        {filtered_groups.length > 3 && <Button key="more" className="group-more-btn" isInline variant='link' onClick={() => setIsExpanded(!isExpanded)}>
+                            {cockpit.format(_("$0 more..."), filtered_groups.length - 3)}
+                        </Button>}
                     </>}
                 </CardTitle>
                 <CardActions>
-                    <Button id="groups-create" onClick={() => group_create_dialog(groups, setIsExpanded)}>
-                        {_("Create new group")}
-                    </Button>
+                    {tableToolbar}
                 </CardActions>
             </CardHeader>
             <CardExpandableContent>
                 <ListingTable columns={columns}
                     id="groups-list"
-                    rows={ groups.map(a => getGroupRow(a, accounts)) }
+                    rows={ filtered_groups.map(a => getGroupRow(a, accounts)) }
                     loading={ groups.length && accounts.length ? '' : _("Loading...") }
                     sortMethod={sortRows}
+                    emptyComponent={<EmptyStatePanel title={_("No matching results")} icon={SearchIcon} />}
                     variant="compact" sortBy={{ index: 2, direction: SortByDirection.asc }} />
             </CardExpandableContent>
         </Card>

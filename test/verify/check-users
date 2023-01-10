@@ -727,11 +727,23 @@ class TestAccounts(MachineCase):
 
         self.login_and_go("/users")
 
+        # Group more button dissapears if all filtered groups are shown in the non expanded view
+        b.wait_visible(".group-more-btn")
+        b.set_input_text("#groups-filter input", "testgroup0")
+        b.wait_not_present(".group-more-btn")
+
         b.click("#groups-view-toggle")
         b.wait_visible('#groups-list td[data-label="Group name"]:contains("testgroup0")')
 
+        # Check group filter in expanded mode and the filter clear button
+        b.set_input_text("#groups-filter input", "casablanca")
+        b.wait_not_present('#groups-list td[data-label="Group name"]:contains("testgroup0")')
+        b.click("#groups-filter button")
+        b.wait_val("#groups-filter input", "")
+        b.wait_visible('#groups-list td[data-label="Group name"]:contains("testgroup0")')
+
         # FIXME: rtl test was flaky, debug it and remove the skip
-        b.assert_pixels("#groups-list tr:contains(testgroup0)", "group-row", skip_layouts=["rtl"])
+        b.assert_pixels("#groups-list tr:contains(testgroup0)", "group-row")
 
         # Delete it
         performGroupAction(b, 'testgroup0', 'Delete group')
