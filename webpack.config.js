@@ -245,11 +245,10 @@ const Copy = require("copy-webpack-plugin");
 const Html = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
-const TerserJSPlugin = require('terser-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const CockpitPoPlugin = require("./pkg/lib/cockpit-po-plugin");
+const { ESBuildMinifyPlugin } = require('esbuild-loader');
 
 /* These can be overridden, typically from the Makefile.am */
 const srcdir = process.env.SRCDIR || __dirname;
@@ -419,11 +418,9 @@ module.exports = {
     optimization: {
         minimize: production,
         minimizer: [
-            new TerserJSPlugin(),
-            new CssMinimizerPlugin({
-                minimizerOptions: {
-                    preset: ['lite']
-                }
+            new ESBuildMinifyPlugin({
+                legalComments: 'external',
+                css: true
             })
         ],
     },
