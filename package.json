@@ -24,13 +24,11 @@
     "xterm-addon-canvas": "0.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
     "@babel/eslint-parser": "^7.13.14",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "argparse": "^2.0.1",
     "axe-core": "^3.5.2",
-    "babel-loader": "^8.1.0",
     "chrome-remote-interface": "^0.31.2",
     "compression-webpack-plugin": "^9.2.0",
     "copy-webpack-plugin": "^6.1.0",

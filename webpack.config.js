@@ -436,17 +436,25 @@ module.exports = {
                 exclude: /\/node_modules\/.*\//, // exclude external dependencies
                 loader: 'strict-loader' // Adds "use strict"
             },
-            /* these modules need to be babel'ed, they cause bugs in their dist'ed form */
+            /* these modules need to be transpiled, they cause bugs in their dist'ed form */
             {
                 test: /\/node_modules\/.*(react-table).*\.js$/,
-                use: "babel-loader"
+                loader: 'esbuild-loader',
+                options: {
+                    loader: 'jsx',
+                    target: ['es2016'],
+                }
             },
             {
                 test: /\.(js|jsx)$/,
                 // exclude external dependencies; it's too slow, and they are already plain JS except the above
                 // also exclude unit tests, we don't need it for them, just a waste and makes failures harder to read
                 exclude: /\/node_modules|\/test-[^/]*\.js/,
-                use: "babel-loader"
+                loader: 'esbuild-loader',
+                options: {
+                    loader: 'jsx',
+                    target: ['es2016'],
+                }
             },
             {
                 test: /patternfly-4-cockpit.scss$/,
