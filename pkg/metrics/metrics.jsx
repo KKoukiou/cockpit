@@ -49,6 +49,7 @@ import * as service from "service";
 import * as timeformat from "timeformat";
 import { superuser } from "superuser";
 import { journal } from "journal";
+import { bootTime } from "bootTime";
 import { useObject, useEvent, useInit } from "hooks.js";
 import { WithDialogs, useDialogs } from "dialogs.jsx";
 
@@ -1468,6 +1469,7 @@ class MetricsHistory extends React.Component {
                     });
                 })
                 .catch(ex => this.setState({ error: ex.toString() }));
+        bootTime.getTime();
     }
 
     componentDidMount() {
