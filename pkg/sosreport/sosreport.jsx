@@ -28,12 +28,16 @@ import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { CodeBlockCode } from "@patternfly/react-core/dist/esm/components/CodeBlock/index.js";
 import { Modal } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
-import { Card, CardActions, CardBody, CardHeader, CardTitle } from "@patternfly/react-core/dist/esm/components/Card/index.js";
+import { Card, CardBody, CardHeader, CardTitle } from '@patternfly/react-core/dist/esm/components/Card/index.js';
 import { Page, PageSection, PageSectionVariants } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
 import { LabelGroup } from "@patternfly/react-core/dist/esm/components/LabelGroup/index.js";
-import { Dropdown, DropdownItem, KebabToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    KebabToggle as KebabToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { InputGroup } from "@patternfly/react-core/dist/esm/components/InputGroup/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
@@ -386,8 +390,8 @@ const Menu = ({ items }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Dropdown onSelect={() => setIsOpen(!isOpen)}
-                  toggle={<KebabToggle onToggle={setIsOpen} />}
+        <DropdownDeprecated onSelect={() => setIsOpen(!isOpen)}
+                  toggle={<KebabToggleDeprecated onToggle={setIsOpen} />}
                   isOpen={isOpen}
                   isPlain
                   position="right"
@@ -396,11 +400,11 @@ const Menu = ({ items }) => {
 };
 
 const MenuItem = ({ onClick, onlyNarrow, children }) => (
-    <DropdownItem className={onlyNarrow ? "show-only-when-narrow" : null}
+    <DropdownItemDeprecated className={onlyNarrow ? "show-only-when-narrow" : null}
                   onKeyPress={onClick}
                   onClick={onClick}>
         {children}
-    </DropdownItem>
+    </DropdownItemDeprecated>
 );
 
 const SOSBody = () => {
@@ -487,15 +491,17 @@ const SOSBody = () => {
     return (
         <PageSection>
             <Card className="ct-card">
-                <CardHeader>
+                <CardHeader actions={{
+                    actions: <><Button id="create-button" variant="primary" onClick={run_report}>
+                        {_("Run report")}
+                    </Button></>,
+                    hasNoOffset: false,
+                    className: undefined
+                }}>
                     <CardTitle>
                         <Text component={TextVariants.h2}>{_("Reports")}</Text>
                     </CardTitle>
-                    <CardActions>
-                        <Button id="create-button" variant="primary" onClick={run_report}>
-                            {_("Run report")}
-                        </Button>
-                    </CardActions>
+
                 </CardHeader>
                 <CardBody className="contains-list">
                     <ListingTable emptyCaption={_("No system reports.")}

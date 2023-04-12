@@ -24,8 +24,13 @@ import { superuser } from "superuser";
 import { admins } from './users.js';
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Badge } from "@patternfly/react-core/dist/esm/components/Badge/index.js";
-import { Card, CardActions, CardExpandableContent, CardHeader, CardTitle } from "@patternfly/react-core/dist/esm/components/Card/index.js";
-import { Dropdown, DropdownItem, DropdownSeparator, KebabToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import { Card, CardExpandableContent, CardHeader, CardTitle } from '@patternfly/react-core/dist/esm/components/Card/index.js';
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    DropdownSeparator as DropdownSeparatorDeprecated,
+    KebabToggle as KebabToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
@@ -54,35 +59,35 @@ const UserActions = ({ account }) => {
     const [isKebabOpen, setKebabOpen] = useState(false);
 
     const actions = [
-        <DropdownItem key="edit-user"
+        <DropdownItemDeprecated key="edit-user"
                       onClick={ev => { ev.preventDefault(); cockpit.location.go(account.name) }}>
             {_("Edit user")}
-        </DropdownItem>,
+        </DropdownItemDeprecated>,
     ];
 
     superuser.allowed && actions.push(
-        <DropdownSeparator key="separator-0" />,
-        <DropdownItem key="log-user-out"
+        <DropdownSeparatorDeprecated key="separator-0" />,
+        <DropdownItemDeprecated key="log-user-out"
                       isDisabled={account.uid === 0 || !account.loggedIn}
                       onClick={() => { setKebabOpen(false); logoutAccountDialog(account) }}>
             {_("Log user out")}
-        </DropdownItem>,
-        <DropdownSeparator key="separator-1" />,
-        <DropdownItem key="lock-account"
+        </DropdownItemDeprecated>,
+        <DropdownSeparatorDeprecated key="separator-1" />,
+        <DropdownItemDeprecated key="lock-account"
                       isDisabled={account.isLocked}
                       onClick={() => { setKebabOpen(false); lockAccountDialog(account) }}>
             {_("Lock account")}
-        </DropdownItem>,
-        <DropdownItem key="delete-account"
+        </DropdownItemDeprecated>,
+        <DropdownItemDeprecated key="delete-account"
                       isDisabled={account.uid === 0}
                       className={account.uid === 0 ? "" : "delete-resource-red"}
                       onClick={() => { setKebabOpen(false); delete_account_dialog(account) }}>
             {_("Delete account")}
-        </DropdownItem>,
+        </DropdownItemDeprecated>,
     );
 
     const kebab = (
-        <Dropdown toggle={<KebabToggle onToggle={setKebabOpen} />}
+        <DropdownDeprecated toggle={<KebabToggleDeprecated onToggle={setKebabOpen} />}
                 isPlain
                 isOpen={isKebabOpen}
                 position="right"
@@ -301,7 +306,7 @@ const GroupsList = ({ groups, accounts, isExpanded, setIsExpanded, min_gid, max_
                 { superuser.allowed &&
                     <>
                         {isExpanded && <ToolbarItem variant="separator" />}
-                        <ToolbarItem alignment={{ md: 'alignRight' }}>
+                        <ToolbarItem align={{ md: 'alignRight' }}>
                             <Button variant="secondary" id="groups-create" onClick={() => group_create_dialog(groups, setIsExpanded, min_gid, max_gid)}>
                                 {_("Create new group")}
                             </Button>
@@ -314,7 +319,7 @@ const GroupsList = ({ groups, accounts, isExpanded, setIsExpanded, min_gid, max_
 
     return (
         <Card className="ct-card" isExpanded={isExpanded}>
-            <CardHeader
+            <CardHeader actions={{ actions: <>{tableToolbar}</>, hasNoOffset: false, className: undefined }}
                 className="ct-card-expandable-header"
                 onExpand={() => setIsExpanded(!isExpanded)}
                 toggleButtonProps={{
@@ -340,9 +345,7 @@ const GroupsList = ({ groups, accounts, isExpanded, setIsExpanded, min_gid, max_
                         </Button>}
                     </>}
                 </CardTitle>
-                <CardActions>
-                    {tableToolbar}
-                </CardActions>
+
             </CardHeader>
             <CardExpandableContent>
                 <ListingTable columns={columns}
@@ -441,7 +444,7 @@ const AccountsList = ({ accounts, current_user, groups, min_uid, max_uid, shells
                 { superuser.allowed &&
                     <>
                         <ToolbarItem variant="separator" />
-                        <ToolbarItem alignment={{ md: 'alignRight' }}>
+                        <ToolbarItem align={{ md: 'alignRight' }}>
                             <Button id="accounts-create" onClick={() => account_create_dialog(accounts, min_uid, max_uid, shells)}>
                                 {_("Create new account")}
                             </Button>

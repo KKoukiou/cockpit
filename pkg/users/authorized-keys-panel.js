@@ -22,8 +22,11 @@ import React, { useState } from 'react';
 import { useObject, useEvent } from 'hooks.js';
 
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { Card, CardActions, CardHeader, CardTitle } from "@patternfly/react-core/dist/esm/components/Card/index.js";
-import { Dropdown, KebabToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import { Card, CardHeader, CardTitle } from '@patternfly/react-core/dist/esm/components/Card/index.js';
+import {
+    Dropdown as DropdownDeprecated,
+    KebabToggle as KebabToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 import { OverflowMenu, OverflowMenuContent, OverflowMenuControl, OverflowMenuDropdownItem, OverflowMenuGroup, OverflowMenuItem } from "@patternfly/react-core/dist/esm/components/OverflowMenu/index.js";
 import { Text, TextVariants } from "@patternfly/react-core/dist/esm/components/Text/index.js";
 import { TextArea } from "@patternfly/react-core/dist/esm/components/TextArea/index.js";
@@ -148,7 +151,7 @@ export function AuthorizedKeys({ name, home, allow_mods }) {
                                         </OverflowMenuGroup>
                                     </OverflowMenuContent>
                                     <OverflowMenuControl>
-                                        <Dropdown position="right"
+                                        <DropdownDeprecated position="right"
                                                   onSelect={() => {
                                                       if (openedMenu.indexOf(k.fp) >= 0)
                                                           setOpenedMenu(openedMenu.filter(m => m !== k.fp));
@@ -156,8 +159,8 @@ export function AuthorizedKeys({ name, home, allow_mods }) {
                                                           setOpenedMenu([...openedMenu, k.fp]);
                                                   }}
                                                   toggle={
-                                                      <KebabToggle
-                                                      onToggle={open => {
+                                                      <KebabToggleDeprecated
+                                                      onToggle={(_event, open) => {
                                                           if (open)
                                                               setOpenedMenu([...openedMenu, k.fp]);
                                                           else

@@ -133,7 +133,7 @@ export const FirewalldRequest = ({ service, title, pageSection }) => {
                             <ToolbarItem>
                                 <Select
                                     aria-label={_("Zone")}
-                                    onToggle={isOpen => setZoneSelectorOpened(isOpen)}
+                                    onToggle={(_event, isOpen) => setZoneSelectorOpened(isOpen)}
                                     isOpen={zoneSelectorOpened}
                                     onSelect={ (e, sel) => { setSelectedZone(sel); setZoneSelectorOpened(false) } }
                                     selections={selectedZone}

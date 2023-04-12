@@ -203,7 +203,7 @@ export class ShutdownModal extends React.Component {
                                 <Select toggleId="delay" isOpen={this.state.isOpen} selections={this.state.selected}
                                         isDisabled={!this.state.formFilled}
                                         className='shutdown-select-delay'
-                                        onToggle={o => this.setState({ isOpen: o })} menuAppendTo="parent"
+                                        onToggle={(_event, o) => this.setState({ isOpen: o })} menuAppendTo="parent"
                                         onSelect={(e, s) => this.setState({ selected: s, isOpen: false }, this.calculate)}>
                                     {options}
                                 </Select>

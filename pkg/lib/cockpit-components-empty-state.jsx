@@ -21,7 +21,7 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { EmptyState, EmptyStateBody, EmptyStateIcon, EmptyStateSecondaryActions, EmptyStateVariant } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
+import { EmptyState, EmptyStateBody, EmptyStateFooter, EmptyStateIcon, EmptyStateVariant } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
 import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
 import "./cockpit-components-empty-state.css";
 
@@ -29,21 +29,21 @@ export const EmptyStatePanel = ({ title, paragraph, loading, icon, action, isAct
     const slimType = title || paragraph ? "" : "slim";
     return (
         <EmptyState variant={EmptyStateVariant.full}>
-            { loading && <Spinner className="ct-spinner" isSVG size="xl" /> }
+            <EmptyStateHeader titleText={<>{title}</>} headingLevel={headingLevel} />{ loading && <Spinner className="ct-spinner" size="xl" /> }
             { icon && <EmptyStateIcon icon={icon} /> }
-            <Title headingLevel={headingLevel} size={titleSize}>
-                {title}
-            </Title>
+
             <EmptyStateBody>
                 {paragraph}
             </EmptyStateBody>
-            { action && (typeof action == "string"
-                ? <Button variant="primary" className={slimType}
+            <EmptyStateFooter>
+                { action && (typeof action == "string"
+                    ? <Button variant="primary" className={slimType}
                           isLoading={isActionInProgress}
                           isDisabled={isActionInProgress}
                           onClick={onAction}>{action}</Button>
-                : action)}
-            { secondary && <EmptyStateSecondaryActions>{secondary}</EmptyStateSecondaryActions> }
+                    : action)}
+                { secondary && <EmptyStateActions>{secondary}</EmptyStateActions> }
+            </EmptyStateFooter>
         </EmptyState>
     );
 };

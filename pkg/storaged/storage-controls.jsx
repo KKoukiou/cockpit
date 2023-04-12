@@ -20,7 +20,12 @@
 import React, { useState } from 'react';
 
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { Dropdown, DropdownItem, DropdownToggle, KebabToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    DropdownToggle as DropdownToggleDeprecated,
+    KebabToggle as KebabToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 import { Tooltip, TooltipPosition } from "@patternfly/react-core/dist/esm/components/Tooltip/index.js";
 import { Switch } from "@patternfly/react-core/dist/esm/components/Switch/index.js";
 import { BarsIcon } from '@patternfly/react-icons';
@@ -216,11 +221,11 @@ export const StorageUsageBar = ({ stats, critical, block, offset, total, small }
 };
 
 export const StorageMenuItem = ({ onClick, onlyNarrow, danger, children }) => (
-    <DropdownItem className={(onlyNarrow ? "show-only-when-narrow" : "") + (danger ? " delete-resource-red" : "")}
+    <DropdownItemDeprecated className={(onlyNarrow ? "show-only-when-narrow" : "") + (danger ? " delete-resource-red" : "")}
                   onKeyPress={checked(onClick)}
                   onClick={checked(onClick)}>
         {children}
-    </DropdownItem>
+    </DropdownItemDeprecated>
 );
 
 export const StorageBarMenu = ({ label, isKebab, onlyNarrow, menuItems }) => {
@@ -231,15 +236,15 @@ export const StorageBarMenu = ({ label, isKebab, onlyNarrow, menuItems }) => {
 
     let toggle;
     if (isKebab)
-        toggle = <KebabToggle onToggle={setIsOpen} />;
+        toggle = <KebabToggleDeprecated onToggle={setIsOpen} />;
     else
-        toggle = <DropdownToggle className="pf-m-primary" toggleIndicator={null}
+        toggle = <DropdownToggleDeprecated className="pf-m-primary" toggleIndicator={null}
                                  onToggle={setIsOpen} aria-label={label}>
             <BarsIcon color="white" />
-        </DropdownToggle>;
+        </DropdownToggleDeprecated>;
 
     return (
-        <Dropdown className={onlyNarrow ? "show-only-when-narrow" : null}
+        <DropdownDeprecated className={onlyNarrow ? "show-only-when-narrow" : null}
                   onSelect={() => setIsOpen(!isOpen)}
                   toggle={toggle}
                   isOpen={isOpen}

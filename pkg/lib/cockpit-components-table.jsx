@@ -23,7 +23,7 @@ import {
     TableComposable, Thead, Tbody, Tr, Th, Td,
     SortByDirection,
 } from '@patternfly/react-table';
-import { EmptyState, EmptyStateBody, EmptyStateSecondaryActions } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
+import { EmptyState, EmptyStateBody, EmptyStateFooter, EmptyStateSecondaryActions } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
 import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/esm/components/Text/index.js";
 
 import './cockpit-components-table.scss';
@@ -151,7 +151,9 @@ export const ListingTable = ({
                             </Text>
                         </TextContent>
                     </EmptyStateBody>
-                    {actions.length > 0 ? <EmptyStateSecondaryActions>{actions}</EmptyStateSecondaryActions> : null}
+                    <EmptyStateFooter>
+                        {actions.length > 0 ? <EmptyStateActions>{actions}</EmptyStateActions> : null}
+                    </EmptyStateFooter>
                 </EmptyState>
             );
         if (!isEmptyStateInTable)

@@ -103,7 +103,7 @@ export const MacMenu = ({ idPrefix, model, mac, setMAC }) => {
                 onClear={clearSelection}
                 onCreateOption={onCreateOption}
                 onSelect={onSelect}
-                onToggle={value => setIsOpen(value)}
+                onToggle={(_event, value) => setIsOpen(value)}
                 selections={optionsMap.find(option => option.value == mac)}
                 variant={SelectVariant.typeahead}
                 toggleId={idPrefix + "-mac-input"}
@@ -126,7 +126,7 @@ export const MemberInterfaceChoices = ({ idPrefix, memberChoices, setMemberChoic
                           isChecked={memberChoices[iface]}
                           key={iface}
                           label={iface}
-                          onChange={checked => setMemberChoices({ ...memberChoices, [iface]: checked })}
+                          onChange={(_event, checked) => setMemberChoices({ ...memberChoices, [iface]: checked })}
                 />
             ))}
         </Stack>

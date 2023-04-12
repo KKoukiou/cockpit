@@ -26,7 +26,13 @@ import React from 'react';
 import { createRoot } from "react-dom/client";
 import { Page, PageSection, PageSectionVariants } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Gallery } from "@patternfly/react-core/dist/esm/layouts/Gallery/index.js";
-import { Dropdown, DropdownItem, DropdownPosition, DropdownToggle, DropdownToggleAction } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    DropdownPosition as DropdownPositionDeprecated,
+    DropdownToggle as DropdownToggleDeprecated,
+    DropdownToggleAction as DropdownToggleActionDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 
 import { superuser } from "superuser";
 
@@ -103,39 +109,39 @@ class OverviewPage extends React.Component {
         const Dialogs = this.context;
         const { actionIsOpen } = this.state;
         const dropdownItems = [
-            <DropdownItem key="reboot" id="reboot"
+            <DropdownItemDeprecated key="reboot" id="reboot"
                           onClick={() => Dialogs.show(<ShutdownModal />)}
                           component="button">
                 {_("Reboot")}
-            </DropdownItem>,
-            <DropdownItem key="shutdown" id="shutdown"
+            </DropdownItemDeprecated>,
+            <DropdownItemDeprecated key="shutdown" id="shutdown"
                           onClick={() => Dialogs.show(<ShutdownModal shutdown />)}
                           component="button">
                 {_("Shutdown")}
-            </DropdownItem>,
+            </DropdownItemDeprecated>,
         ];
 
         let headerActions = null;
         if (this.state.privileged)
             headerActions = (
-                <Dropdown onSelect={() => this.setState({ actionIsOpen: true })}
+                <DropdownDeprecated onSelect={() => this.setState({ actionIsOpen: true })}
                     toggle={
-                        <DropdownToggle
+                        <DropdownToggleDeprecated
                             splitButtonItems={[
-                                <DropdownToggleAction id='reboot-button'
+                                <DropdownToggleActionDeprecated id='reboot-button'
                                     key='reboot-button'
                                     onClick={() => Dialogs.show(<ShutdownModal />)}>
                                     {_("Reboot")}
-                                </DropdownToggleAction>
+                                </DropdownToggleActionDeprecated>
                             ]}
                             toggleVariant="secondary"
                             splitButtonVariant="action"
-                            onToggle={isOpen => this.setState({ actionIsOpen: isOpen })}
+                            onToggle={(_event, isOpen) => this.setState({ actionIsOpen: isOpen })}
                             id="shutdown-group"
                         />
                     }
                     isOpen={actionIsOpen}
-                    position={DropdownPosition.right}
+                    position={DropdownPositionDeprecated.right}
                     dropdownItems={dropdownItems}
                 />);
 

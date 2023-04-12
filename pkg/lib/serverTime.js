@@ -469,7 +469,7 @@ export function ServerTimeConfig() {
                 body = <div>{cockpit.format(_("Synchronized with $0"), ntp.server)}</div>;
         } else {
             if (ntp.server) {
-                icon = <Spinner size="md" isSVG />;
+                icon = <Spinner size="md" />;
                 header = _("Synchronizing");
                 body = <div>{cockpit.format(_("Trying to synchronize with $0"), ntp.server)}</div>;
             } else {

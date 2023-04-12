@@ -94,7 +94,7 @@ function AccountCreateBody({ state, errors, change, shells }) {
                        fieldId="accounts-create-user-shell">
                 <Select variant={SelectVariant.single}
                         toggleId="accounts-create-user-shell"
-                        onToggle={statusIsExpanded => change("isShellSelectExpanded", statusIsExpanded)}
+                        onToggle={(_event, statusIsExpanded) => change("isShellSelectExpanded", statusIsExpanded)}
                         onSelect={(event, selection) => { change("shell", selection); change("isShellSelectExpanded", false) }}
                         selections={shell}
                         isOpen={isShellSelectExpanded}
@@ -120,7 +120,7 @@ function AccountCreateBody({ state, errors, change, shells }) {
                            <Checkbox id="accounts-create-force-password-change"
                                      className="pf-u-mb-xs"
                                      label={_("Require password change on first login")}
-                                     isChecked={change_passw_force} onChange={checked => change("change_passw_force", checked)} />
+                                     isChecked={change_passw_force} onChange={(_event, checked) => change("change_passw_force", checked)} />
                        } />
 
                 <Flex spaceItems={{ default: 'spaceItemsSm' }} alignItems={{ default: 'alignItemsCenter' }}>
@@ -472,7 +472,7 @@ export function account_create_dialog(accounts, min_uid, max_uid, shells) {
         if (state.dialogLoading) {
             props.body = (
                 <Bullseye>
-                    <Spinner isSVG />
+                    <Spinner />
                 </Bullseye>
             );
         } else {

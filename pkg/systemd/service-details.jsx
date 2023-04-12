@@ -21,7 +21,12 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { DescriptionList, DescriptionListDescription, DescriptionListGroup, DescriptionListTerm } from "@patternfly/react-core/dist/esm/components/DescriptionList/index.js";
-import { Dropdown, DropdownItem, DropdownSeparator, KebabToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    DropdownSeparator as DropdownSeparatorDeprecated,
+    KebabToggle as KebabToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { ExpandableSection } from "@patternfly/react-core/dist/esm/components/ExpandableSection/index.js";
 import { Tooltip, TooltipPosition } from "@patternfly/react-core/dist/esm/components/Tooltip/index.js";
@@ -124,43 +129,43 @@ const ServiceActions = ({ masked, active, failed, canReload, actionCallback, del
     // If masked, only show unmasking and nothing else
     if (masked) {
         actions.push(
-            <DropdownItem key="unmask" onClick={() => fileActionCallback("UnmaskUnitFiles", undefined)}>{ _("Allow running (unmask)") }</DropdownItem>
+            <DropdownItemDeprecated key="unmask" onClick={() => fileActionCallback("UnmaskUnitFiles", undefined)}>{ _("Allow running (unmask)") }</DropdownItemDeprecated>
         );
     } else { // All cases when not masked
         if (active) {
             if (canReload) {
                 actions.push(
-                    <DropdownItem key="reload" onClick={() => actionCallback("ReloadUnit")}>{ _("Reload") }</DropdownItem>
+                    <DropdownItemDeprecated key="reload" onClick={() => actionCallback("ReloadUnit")}>{ _("Reload") }</DropdownItemDeprecated>
                 );
             }
             actions.push(
-                <DropdownItem key="restart" onClick={() => actionCallback("RestartUnit")}>{ _("Restart") }</DropdownItem>
+                <DropdownItemDeprecated key="restart" onClick={() => actionCallback("RestartUnit")}>{ _("Restart") }</DropdownItemDeprecated>
             );
             actions.push(
-                <DropdownItem key="stop" onClick={() => actionCallback("StopUnit")}>{ _("Stop") }</DropdownItem>,
+                <DropdownItemDeprecated key="stop" onClick={() => actionCallback("StopUnit")}>{ _("Stop") }</DropdownItemDeprecated>,
             );
         } else {
             actions.push(
-                <DropdownItem key="start" onClick={() => actionCallback("StartUnit")}>{ _("Start") }</DropdownItem>
+                <DropdownItemDeprecated key="start" onClick={() => actionCallback("StartUnit")}>{ _("Start") }</DropdownItemDeprecated>
             );
         }
 
         if (deleteActionCallback) {
-            actions.push(<DropdownSeparator key="delete-divider" />);
+            actions.push(<DropdownSeparatorDeprecated key="delete-divider" />);
             actions.push(
-                <DropdownItem key="delete" className="pf-m-danger" onClick={() => deleteActionCallback()}>{ _("Delete") }</DropdownItem>
+                <DropdownItemDeprecated key="delete" className="pf-m-danger" onClick={() => deleteActionCallback()}>{ _("Delete") }</DropdownItemDeprecated>
             );
         }
 
         if (actions.length > 0) {
             actions.push(
-                <DropdownSeparator key="divider" />
+                <DropdownSeparatorDeprecated key="divider" />
             );
         }
 
         if (failed)
             actions.push(
-                <DropdownItem key="reset" onClick={() => actionCallback("ResetFailedUnit", []) }>{ _("Clear 'Failed to start'") }</DropdownItem>
+                <DropdownItemDeprecated key="reset" onClick={() => actionCallback("ResetFailedUnit", []) }>{ _("Clear 'Failed to start'") }</DropdownItemDeprecated>
             );
 
         const confirm = () => {
@@ -177,18 +182,18 @@ const ServiceActions = ({ masked, active, failed, canReload, actionCallback, del
         };
 
         actions.push(
-            <DropdownItem key="mask" onClick={confirm}>{ _("Disallow running (mask)") }</DropdownItem>
+            <DropdownItemDeprecated key="mask" onClick={confirm}>{ _("Disallow running (mask)") }</DropdownItemDeprecated>
         );
 
-        actions.push(<DropdownSeparator key="pin-divider" />);
+        actions.push(<DropdownSeparatorDeprecated key="pin-divider" />);
         actions.push(
-            <DropdownItem key="pin" onClick={() => pinUnitCallback() }>{isPinned ? _("Unpin unit") : _("Pin unit")}</DropdownItem>
+            <DropdownItemDeprecated key="pin" onClick={() => pinUnitCallback() }>{isPinned ? _("Unpin unit") : _("Pin unit")}</DropdownItemDeprecated>
         );
     }
 
     return (
-        <Dropdown id="service-actions" title={ _("Additional actions") }
-                  toggle={<KebabToggle isDisabled={disabled}
+        <DropdownDeprecated id="service-actions" title={ _("Additional actions") }
+                  toggle={<KebabToggleDeprecated isDisabled={disabled}
                                        onToggle={setIsActionOpen} />}
                   isOpen={isActionOpen}
                   isPlain
@@ -525,7 +530,7 @@ export class ServiceDetails extends React.Component {
         if (this.state.waitsAction || this.state.waitsFileAction) {
             status = [
                 <div key="updating" className="status-updating">
-                    <Spinner isSVG size="md" className="status-icon" />
+                    <Spinner size="md" className="status-icon" />
                     <span className="status">{ _("Updating status...") }</span>
                 </div>
             ];

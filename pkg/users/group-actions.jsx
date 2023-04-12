@@ -20,7 +20,12 @@
 import cockpit from 'cockpit';
 import React, { useState } from 'react';
 
-import { Dropdown, DropdownItem, DropdownSeparator, KebabToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    DropdownSeparator as DropdownSeparatorDeprecated,
+    KebabToggle as KebabToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 
 import { delete_group_dialog } from "./delete-group-dialog.js";
 import { rename_group_dialog } from "./rename-group-dialog.jsx";
@@ -34,20 +39,20 @@ export const GroupActions = ({ group, accounts }) => {
         return null;
 
     const actions = [
-        <DropdownItem key="rename-group"
+        <DropdownItemDeprecated key="rename-group"
                       onClick={() => { setKebabOpen(false); rename_group_dialog(group.name) }}>
             {_("Rename group")}
-        </DropdownItem>,
-        <DropdownSeparator key="separator" />,
-        <DropdownItem key="delete-group"
+        </DropdownItemDeprecated>,
+        <DropdownSeparatorDeprecated key="separator" />,
+        <DropdownItemDeprecated key="delete-group"
                       className="delete-resource-red"
                       onClick={() => { setKebabOpen(false); delete_group_dialog(group) }}>
             {_("Delete group")}
-        </DropdownItem>
+        </DropdownItemDeprecated>
     ];
 
     const kebab = (
-        <Dropdown toggle={<KebabToggle onToggle={setKebabOpen} />}
+        <DropdownDeprecated toggle={<KebabToggleDeprecated onToggle={setKebabOpen} />}
                 isPlain
                 isOpen={isKebabOpen}
                 position="right"

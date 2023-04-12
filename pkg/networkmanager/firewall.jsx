@@ -26,9 +26,13 @@ import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Breadcrumb, BreadcrumbItem } from "@patternfly/react-core/dist/esm/components/Breadcrumb/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
-import { Card, CardActions, CardBody, CardHeader, CardTitle } from "@patternfly/react-core/dist/esm/components/Card/index.js";
+import { Card, CardBody, CardHeader, CardTitle } from '@patternfly/react-core/dist/esm/components/Card/index.js';
 import { DataList, DataListCell, DataListCheck, DataListItem, DataListItemCells, DataListItemRow } from "@patternfly/react-core/dist/esm/components/DataList/index.js";
-import { Dropdown, DropdownItem, KebabToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    KebabToggle as KebabToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Form, FormGroup, FormHelperText } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Radio } from "@patternfly/react-core/dist/esm/components/Radio/index.js";
@@ -61,14 +65,14 @@ const upperCaseFirstLetter = text => text[0].toUpperCase() + text.slice(1);
 const DeleteDropdown = ({ items, id }) => {
     const [isActionsKebabOpen, setActionsKebabOpen] = useState(false);
 
-    const dropdown_items = items.map(item => <DropdownItem key={item.text}
+    const dropdown_items = items.map(item => <DropdownItemDeprecated key={item.text}
                                                            className={item.danger ? "pf-m-danger" : ""}
                                                            aria-label={item.ariaLabel}
                                                            onClick={item.handleClick}>
         {item.text}
-    </DropdownItem>);
+    </DropdownItemDeprecated>);
 
-    return (<Dropdown toggle={<KebabToggle onToggle={isOpen => setActionsKebabOpen(isOpen)} id={id || null} />}
+    return (<DropdownDeprecated toggle={<KebabToggleDeprecated onToggle={(_event, isOpen) => setActionsKebabOpen(isOpen)} id={id || null} />}
                       isOpen={isActionsKebabOpen}
                       isPlain
                       position="right"
@@ -648,7 +652,7 @@ class AddEditServicesModal extends React.Component {
                                                     <DataListItemRow>
                                                         <DataListCheck aria-labelledby={s.id}
                                                                    isChecked={this.state.selected.has(s.id)}
-                                                                   onChange={(value, event) => this.onToggleService(event, s.id)}
+                                                                   onChange={(event, value) => this.onToggleService(event, s.id)}
                                                                    id={"firewall-service-" + s.id}
                                                                    name={s.id + "-checkbox"} />
                                                         <DataListItemCells
@@ -860,14 +864,14 @@ class ActivateZoneModal extends React.Component {
                             <Checkbox key={i.device}
                                       id={i.device}
                                       value={i.device}
-                                      onChange={(value, event) => this.onInterfaceChange(event)}
+                                      onChange={(event, value) => this.onInterfaceChange(event)}
                                       isChecked={this.state.interfaces.has(i.device)}
                                       label={i.device} />) }
                         { virtualDevices.map(i =>
                             <Checkbox key={i.device}
                                       id={i.device}
                                       value={i.device}
-                                      onChange={(value, event) => this.onInterfaceChange(event)}
+                                      onChange={(event, value) => this.onInterfaceChange(event)}
                                       isChecked={this.state.interfaces.has(i.device)}
                                       label={i.device} />) }
                     </FormGroup>
@@ -886,7 +890,7 @@ class ActivateZoneModal extends React.Component {
                                onChange={(value, e) => this.onChange("ipRange", e.target.value)}
                                label={ _("Range") } />
                         { this.state.ipRange === "ip-range" && <TextInput id="add-zone-ip" onChange={value => this.onChange("ipRangeValue", value)} /> }
-                        <FormHelperText isHidden={this.state.ipRange != "ip-range"}>{_("IP address with routing prefix. Separate multiple values with a comma. Example: 192.0.2.0/24, 2001:db8::/32")}</FormHelperText>
+                        <FormHelperText>{_("IP address with routing prefix. Separate multiple values with a comma. Example: 192.0.2.0/24, 2001:db8::/32")}</FormHelperText>
                     </FormGroup>
                 </Form>
             </Modal>

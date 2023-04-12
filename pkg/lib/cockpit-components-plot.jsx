@@ -23,7 +23,12 @@ import React, { useState, useRef, useLayoutEffect } from 'react';
 import { useEvent } from "hooks.js";
 
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { Dropdown, DropdownItem, DropdownSeparator, DropdownToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    DropdownSeparator as DropdownSeparatorDeprecated,
+    DropdownToggle as DropdownToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 
 import { AngleLeftIcon, AngleRightIcon, SearchMinusIcon } from '@patternfly/react-icons';
 
@@ -241,13 +246,13 @@ export const ZoomControls = ({ plot_state }) => {
 
     function range_item(seconds, title) {
         return (
-            <DropdownItem key={title}
+            <DropdownItemDeprecated key={title}
                           onClick={() => {
                               setIsOpen(false);
                               zoom_state.set_range(seconds);
                           }}>
                 {title}
-            </DropdownItem>
+            </DropdownItemDeprecated>
         );
     }
 
@@ -256,14 +261,14 @@ export const ZoomControls = ({ plot_state }) => {
 
     return (
         <div>
-            <Dropdown
+            <DropdownDeprecated
                 isOpen={isOpen}
-                toggle={<DropdownToggle onToggle={setIsOpen}>{format_range(zoom_state.x_range)}</DropdownToggle>}
+                toggle={<DropdownToggleDeprecated onToggle={setIsOpen}>{format_range(zoom_state.x_range)}</DropdownToggleDeprecated>}
                 dropdownItems={[
-                    <DropdownItem key="now" onClick={() => { zoom_state.goto_now(); setIsOpen(false) }}>
+                    <DropdownItemDeprecated key="now" onClick={() => { zoom_state.goto_now(); setIsOpen(false) }}>
                         {_("Go to now")}
-                    </DropdownItem>,
-                    <DropdownSeparator key="sep" />,
+                    </DropdownItemDeprecated>,
+                    <DropdownSeparatorDeprecated key="sep" />,
                     range_item(5 * 60, _("5 minutes")),
                     range_item(60 * 60, _("1 hour")),
                     range_item(6 * 60 * 60, _("6 hours")),

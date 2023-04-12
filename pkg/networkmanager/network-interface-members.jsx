@@ -19,8 +19,12 @@
 import cockpit from "cockpit";
 import React, { useState, useContext } from "react";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { Card, CardActions, CardHeader, CardTitle } from "@patternfly/react-core/dist/esm/components/Card/index.js";
-import { Dropdown, DropdownItem, DropdownToggle } from "@patternfly/react-core/dist/esm/components/Dropdown/index.js";
+import { Card, CardHeader, CardTitle } from '@patternfly/react-core/dist/esm/components/Card/index.js';
+import {
+    Dropdown as DropdownDeprecated,
+    DropdownItem as DropdownItemDeprecated,
+    DropdownToggle as DropdownToggleDeprecated
+} from '@patternfly/react-core/dist/esm/deprecated/components/Dropdown/index.js';
 import { Switch } from "@patternfly/react-core/dist/esm/components/Switch/index.js";
 import { Text, TextVariants } from "@patternfly/react-core/dist/esm/components/Text/index.js";
 import { MinusIcon } from '@patternfly/react-icons';
@@ -106,7 +110,7 @@ export const NetworkInterfaceMembers = ({
                             <div className="btn-group">
                                 {onoff}
                                 {privileged && <Button variant="secondary"
-                                    isSmall
+                                    size="sm"
                                     onClick={syn_click(model, () => {
                                         with_checkpoint(
                                             model,
@@ -180,21 +184,21 @@ export const NetworkInterfaceMembers = ({
                     };
 
                     return (
-                        <DropdownItem onClick={syn_click(model, onClick)}
+                        <DropdownItemDeprecated onClick={syn_click(model, onClick)}
                                   key={"add-member-" + iface.Name}
                                   component="button">
                             {iface.Name}
-                        </DropdownItem>
+                        </DropdownItemDeprecated>
                     );
                 })
     );
 
     const add_btn = (
-        <Dropdown onSelect={() => setIsOpen(false)}
+        <DropdownDeprecated onSelect={() => setIsOpen(false)}
                   toggle={
-                      <DropdownToggle id="add-member" onToggle={setIsOpen}>
+                      <DropdownToggleDeprecated id="add-member" onToggle={setIsOpen}>
                           {_("Add member")}
-                      </DropdownToggle>
+                      </DropdownToggleDeprecated>
                   }
                   isOpen={isOpen}
                   position="right"
@@ -203,11 +207,9 @@ export const NetworkInterfaceMembers = ({
 
     return (
         <Card id="network-interface-members" className="network-interface-members">
-            <CardHeader>
+            <CardHeader actions={{ actions: <>{add_btn}</>, hasNoOffset: false, className: undefined }}>
                 <CardTitle><Text component={TextVariants.h2}>{_("Interface members")}</Text></CardTitle>
-                <CardActions>
-                    {add_btn}
-                </CardActions>
+
             </CardHeader>
             <ListingTable aria-label={_("Interface members")}
                           className="networking-interface-members"
