@@ -147,6 +147,13 @@ const RESOURCES = {
         normalize: bps => bps / scaleUseNetwork,
         format: bps => cockpit.format_bytes_per_sec(bps),
     },
+    _reboot: {
+        name: _("Reboot"),
+        event_description: _("Reboot"),
+        // B/s, unbounded, dynamic scaling for normalization
+        normalize: x => x,
+        format: x => x,
+    }
 };
 
 const CURRENT_METRICS = [
@@ -1092,7 +1099,7 @@ class MetricsHour extends React.Component {
                     return;
                 const value = samples[type];
                 // either high enough slope, or crossing the 80% threshold
-                if (prev_val !== null && (value - prev_val > 0.25 || (prev_val < 0.75 && value >= 0.8))) {
+                if (prev_val !== null && (value - prev_val > 0.25 || (prev_val < 0.75 && value >= 0.8)) || (type === "reboot")) {
                     const minute = Math.floor(i / SAMPLES_PER_MIN);
                     if (minute_events[minute] === undefined)
                         minute_events[minute] = { events: [], start: i - 1 };
@@ -1407,7 +1414,7 @@ class MetricsHistory extends React.Component {
         this.oldest_timestamp = 0;
         // Timestamp representing today midnight to calculate other days for date select
         this.today_midnight = null;
-        this.columns = [["cpu", _("CPU")], ["memory", _("Memory")], ["disks", _("Disk I/O")], ["network", _("Network")]];
+        this.columns = [["cpu", _("CPU")], ["memory", _("Memory")], ["disks", _("Disk I/O")], ["network", _("Network")], ["reboot", _("Reboot")]];
 
         this.state = {
             hours: [], // available hours for rendering in descending order
@@ -1469,7 +1476,6 @@ class MetricsHistory extends React.Component {
                     });
                 })
                 .catch(ex => this.setState({ error: ex.toString() }));
-        bootTime.getTime();
     }
 
     componentDidMount() {
@@ -1529,6 +1535,8 @@ class MetricsHistory extends React.Component {
             metrics: HISTORY_METRICS,
         });
 
+        // Loading the reboot time
+        const rebootTimes = bootTime.getRebootTime();
         metrics.addEventListener("message", (event, message) => {
             debug("history metrics message", message);
             message = JSON.parse(message);
@@ -1569,6 +1577,8 @@ class MetricsHistory extends React.Component {
                 const use_network = current_sample[8].reduce((acc, cur) => acc + cur, 0);
                 const sat_cpu = typeof current_sample[3][1] === 'number' ? current_sample[3][1] : null; // instances: (15min, 1min, 5min), pick 1min
 
+                // Finding the reboot time in specfic current_hour, hour_index
+                const reboot = rebootTimes.has(JSON.stringify({ current_hour, hour_index }));
                 this.data[current_hour][hour_index] = {
                     use_cpu: typeof current_sample[2] === 'number' ? [current_sample[0], current_sample[1], current_sample[2]] : null,
                     sat_cpu,
@@ -1576,6 +1586,7 @@ class MetricsHistory extends React.Component {
                     sat_memory: current_sample[6],
                     use_disks: current_sample[7],
                     use_network,
+                    _reboot: reboot,
                 };
 
                 // keep track of maximums of unbounded values, for dynamic scaling

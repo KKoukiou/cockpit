@@ -18,17 +18,33 @@
  */
 
 import cockpit from "cockpit";
-// import * as timeformat from "timeformat";
+import parseISO from 'date-fns/parseISO';
 
+const INTERVAL = 5000;
 export const bootTime = { };
 
-bootTime.getTime = function getTime() {
-    cockpit.spawn("last -x | grep reboot".split(" "))
+bootTime.getRebootTime = function getRebootTime() {
+    const time = new Set();
+    cockpit.spawn(["last", "--time-format=iso", "reboot"])
             .then((out) => {
                 const lines = out.split('\n');
-                for (const l of lines) {
-                    console.log(l.replace(/ {2,}/g, ' ').split(" "));
+                for (let l of lines) {
+                    l = l.replace(/ {2,}/g, " ");
+                    const startTime = parseISO(l.split(" ")[4]);
+                    const startTime_hour = new Date(startTime.getTime());
+                    if (startTime.getMinutes() > 30)
+                        startTime_hour.setHours(startTime.getHours(), 30, 0, 0);
+                    else
+                        startTime_hour.setHours(startTime.getHours() - 1, 30, 0, 0);
+                    const startTime_hour_index = Math.floor((startTime.getTime() - startTime_hour.getTime()) / INTERVAL);
+                    console.log(startTime, startTime_hour, startTime_hour_index);
+
+                    time.add(JSON.stringify({
+                        current_hour: startTime_hour.getTime(),
+                        hour_index: startTime_hour_index
+                    }));
                 }
             })
             .catch(ex => console.error(ex));
+    return time;
 };
