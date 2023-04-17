@@ -1098,8 +1098,10 @@ class MetricsHour extends React.Component {
                 if (samples === null)
                     return;
                 const value = samples[type];
+                if (value && type === "_reboot")
+                    console.info(value, type);
                 // either high enough slope, or crossing the 80% threshold
-                if (prev_val !== null && (value - prev_val > 0.25 || (prev_val < 0.75 && value >= 0.8)) || (type === "reboot")) {
+                if ((prev_val !== null && (value - prev_val > 0.25 || (prev_val < 0.75 && value >= 0.8))) || (type === "_reboot" && value)) {
                     const minute = Math.floor(i / SAMPLES_PER_MIN);
                     if (minute_events[minute] === undefined)
                         minute_events[minute] = { events: [], start: i - 1 };
@@ -1535,8 +1537,6 @@ class MetricsHistory extends React.Component {
             metrics: HISTORY_METRICS,
         });
 
-        // Loading the reboot time
-        const rebootTimes = bootTime.getRebootTime();
         metrics.addEventListener("message", (event, message) => {
             debug("history metrics message", message);
             message = JSON.parse(message);
@@ -1577,8 +1577,7 @@ class MetricsHistory extends React.Component {
                 const use_network = current_sample[8].reduce((acc, cur) => acc + cur, 0);
                 const sat_cpu = typeof current_sample[3][1] === 'number' ? current_sample[3][1] : null; // instances: (15min, 1min, 5min), pick 1min
 
-                // Finding the reboot time in specfic current_hour, hour_index
-                const reboot = rebootTimes.has(JSON.stringify({ current_hour, hour_index }));
+                // console.info('Reaches 1583', current_hour, hour_index);  1681578000000 358
                 this.data[current_hour][hour_index] = {
                     use_cpu: typeof current_sample[2] === 'number' ? [current_sample[0], current_sample[1], current_sample[2]] : null,
                     sat_cpu,
@@ -1586,7 +1585,6 @@ class MetricsHistory extends React.Component {
                     sat_memory: current_sample[6],
                     use_disks: current_sample[7],
                     use_network,
-                    _reboot: reboot,
                 };
 
                 // keep track of maximums of unbounded values, for dynamic scaling
@@ -1637,6 +1635,20 @@ class MetricsHistory extends React.Component {
             }
 
             metrics.close();
+        });
+
+        // Finding the reboot time in specfic current_hour, hour_index
+        // Loading the reboot time
+        bootTime.getRebootTime().then((rebootTimes) => {
+            console.info({ rebootTimes, data: this.data });
+            for (const r of rebootTimes) {
+                if (this.data[r.current_hour] == undefined) {
+                    this.data[r.current_hour] = new Array(r.hour_index + 1);
+                }
+                this.data[r.current_hour][r.hour_index] = {
+                    _reboot: r
+                };
+            }
         });
     }
 

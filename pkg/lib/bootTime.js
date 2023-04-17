@@ -25,26 +25,30 @@ export const bootTime = { };
 
 bootTime.getRebootTime = function getRebootTime() {
     const time = new Set();
-    cockpit.spawn(["last", "--time-format=iso", "reboot"])
+    return cockpit.spawn(["last", "--time-format=iso", "reboot"])
             .then((out) => {
                 const lines = out.split('\n');
                 for (let l of lines) {
                     l = l.replace(/ {2,}/g, " ");
                     const startTime = parseISO(l.split(" ")[4]);
                     const startTime_hour = new Date(startTime.getTime());
-                    if (startTime.getMinutes() > 30)
-                        startTime_hour.setHours(startTime.getHours(), 30, 0, 0);
-                    else
-                        startTime_hour.setHours(startTime.getHours() - 1, 30, 0, 0);
-                    const startTime_hour_index = Math.floor((startTime.getTime() - startTime_hour.getTime()) / INTERVAL);
-                    console.log(startTime, startTime_hour, startTime_hour_index);
 
-                    time.add(JSON.stringify({
-                        current_hour: startTime_hour.getTime(),
+                    if (!(startTime_hour instanceof Date && isFinite(startTime_hour)))
+                        continue;
+
+                    const startHour = startTime_hour;
+                    startHour.setMinutes(0);
+                    startHour.setSeconds(0);
+                    const startTime_hour_index = Math.floor((startTime.getTime() - startHour.getTime()) / INTERVAL);
+
+                    time.add({
+                        startTime,
+                        startHour,
+                        current_hour: startHour.getTime(),
                         hour_index: startTime_hour_index
-                    }));
+                    });
                 }
+                return time;
             })
             .catch(ex => console.error(ex));
-    return time;
 };
