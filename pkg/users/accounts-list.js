@@ -457,11 +457,10 @@ const AccountsList = ({ accounts, current_user, groups, min_uid, max_uid, shells
 
     return (
         <Card className="ct-card">
-            <CardHeader>
+            <CardHeader actions={{ actions: tableToolbar }}>
                 <CardTitle>
                     <Text component={TextVariants.h2}>{_("Accounts")}</Text>
                 </CardTitle>
-                {tableToolbar}
             </CardHeader>
             <ListingTable columns={columns}
                           id="accounts-list"
