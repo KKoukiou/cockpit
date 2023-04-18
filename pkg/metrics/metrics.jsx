@@ -31,7 +31,7 @@ import { Modal } from "@patternfly/react-core/dist/esm/components/Modal/index.js
 import { Page, PageGroup, PageSection, PageSectionVariants } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
 import { Progress, ProgressVariant } from "@patternfly/react-core/dist/esm/components/Progress/index.js";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Stack, StackItem } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { Switch } from "@patternfly/react-core/dist/esm/components/Switch/index.js";
 import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/esm/components/Text/index.js";
@@ -1697,7 +1697,7 @@ class MetricsHistory extends React.Component {
                 .map((_undef, i) => {
                     const date = this.today_midnight - i * 86400000;
                     const text = i == 0 ? _("Today") : timeformat.weekdayDate(date);
-                    return <SelectOption key={date} value={date}>{text}</SelectOption>;
+                    return <SelectOptionDeprecated key={date} value={date}>{text}</SelectOptionDeprecated>;
                 });
 
         function Label(props) {
@@ -1713,7 +1713,7 @@ class MetricsHistory extends React.Component {
 
         const columnVisibilityMenuItems = this.columns.map(itm => {
             return (
-                <SelectOption
+                <SelectOptionDeprecated
                     key={itm[0]}
                     value={itm[1]}
                     inputId={'column-visibility-option-' + itm[0]} />
@@ -1730,7 +1730,7 @@ class MetricsHistory extends React.Component {
                 <PageGroup stickyOnBreakpoint={{ default: 'top' }}>
                     <section className="metrics-heading">
                         <Flex className="metrics-selectors" spaceItems={{ default: 'spaceItemsSm' }}>
-                            <Select
+                            <SelectDeprecated
                                 className="select-min metrics-label"
                                 aria-label={_("Jump to")}
                                 onToggle={this.handleToggle}
@@ -1740,11 +1740,11 @@ class MetricsHistory extends React.Component {
                                 toggleId="date-picker-select-toggle"
                             >
                                 {options}
-                            </Select>
-                            <Select
+                            </SelectDeprecated>
+                            <SelectDeprecated
                                 toggleAriaLabel={_("Graph visibility options menu")}
                                 className="select-min metrics-label"
-                                variant={SelectVariant.checkbox}
+                                variant="checkbox"
                                 isCheckboxSelectionBadgeHidden
                                 isOpen={!!this.state.isOpenColumnVisibility}
                                 onSelect={(_, selection) => {
@@ -1757,7 +1757,7 @@ class MetricsHistory extends React.Component {
                                 placeholderText={_("Graph visibility")}
                                 selections={selections}>
                                 {columnVisibilityMenuItems}
-                            </Select>
+                            </SelectDeprecated>
                         </Flex>
                         <Stack className="metrics-label-graph-mobile">
                             {[["cpu", _("CPU usage/load")], ["memory", _("Memory usage/swap")], ["disks", _("Disk I/O")], ["network", _("Network")]]

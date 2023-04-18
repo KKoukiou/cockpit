@@ -19,7 +19,7 @@
 import React, { useState } from 'react';
 import { Alert, AlertActionCloseButton, AlertActionLink } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { Select, SelectOption } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Toolbar, ToolbarContent, ToolbarGroup, ToolbarItem } from "@patternfly/react-core/dist/esm/components/Toolbar/index.js";
 import { PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 
@@ -131,15 +131,15 @@ export const FirewalldRequest = ({ service, title, pageSection }) => {
                         <ToolbarGroup spaceItems={{ default: "spaceItemsMd" }}>
                             <ToolbarItem variant="label">{ _("Zone") }</ToolbarItem>
                             <ToolbarItem>
-                                <Select
+                                <SelectDeprecated
                                     aria-label={_("Zone")}
                                     onToggle={(_event, isOpen) => setZoneSelectorOpened(isOpen)}
                                     isOpen={zoneSelectorOpened}
                                     onSelect={ (e, sel) => { setSelectedZone(sel); setZoneSelectorOpened(false) } }
                                     selections={selectedZone}
                                     toggleId={"firewalld-request-" + service}>
-                                    { zones.map(zone => <SelectOption key={zone} value={zone}>{zone}</SelectOption>) }
-                                </Select>
+                                    { zones.map(zone => <SelectOptionDeprecated key={zone} value={zone}>{zone}</SelectOptionDeprecated>) }
+                                </SelectDeprecated>
                             </ToolbarItem>
 
                             <ToolbarItem>

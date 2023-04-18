@@ -23,7 +23,7 @@ import React from 'react';
 import { Bullseye } from "@patternfly/react-core/dist/esm/layouts/Bullseye/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
@@ -92,7 +92,7 @@ function AccountCreateBody({ state, errors, change, shells }) {
 
             <FormGroup label={_("Shell")}
                        fieldId="accounts-create-user-shell">
-                <Select variant={SelectVariant.single}
+                <SelectDeprecated variant="sigle"
                         toggleId="accounts-create-user-shell"
                         onToggle={(_event, statusIsExpanded) => change("isShellSelectExpanded", statusIsExpanded)}
                         onSelect={(event, selection) => { change("shell", selection); change("isShellSelectExpanded", false) }}
@@ -100,8 +100,8 @@ function AccountCreateBody({ state, errors, change, shells }) {
                         isOpen={isShellSelectExpanded}
                         aria-labelledby="vm-state-select"
                         menuAppendTo="parent">
-                    { shells.map(shell_path => <SelectOption value={shell_path} key={shell_path} label={shell_path}>{shell_path}</SelectOption>) }
-                </Select>
+                    { shells.map(shell_path => <SelectOptionDeprecated value={shell_path} key={shell_path} label={shell_path}>{shell_path}</SelectOptionDeprecated>) }
+                </SelectDeprecated>
             </FormGroup>
 
             <FormGroup label={_("User ID")}

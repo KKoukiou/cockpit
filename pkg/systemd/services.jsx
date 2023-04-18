@@ -24,7 +24,7 @@ import 'cockpit-dark-theme'; // once per page
 import React, { useState, useEffect, useCallback } from "react";
 import { createRoot } from 'react-dom/client';
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Page, PageSection, PageSectionVariants } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Card } from "@patternfly/react-core/dist/esm/components/Card/index.js";
 import { SearchInput } from "@patternfly/react-core/dist/esm/components/SearchInput/index.js";
@@ -825,33 +825,33 @@ const ServicesPageFilters = ({
                            deleteChip={onDeleteChip}
                            deleteChipGroup={onDeleteChipGroup}
                            categoryName={_("Active state")}>
-                <Select aria-label={_("Active state")}
+                <SelectDeprecated aria-label={_("Active state")}
                         toggleId="services-dropdown-active-state"
-                        variant={SelectVariant.checkbox}
+                        variant="checkbox"
                         onToggle={setActiveStateFilterIsOpen}
                         onSelect={onActiveStateSelect}
                         selections={filters.activeState}
                         isOpen={activeStateFilterIsOpen}
                         placeholderText={_("Active state")}>
-                    {activeStateDropdownOptions.map(option => <SelectOption key={option.value}
+                    {activeStateDropdownOptions.map(option => <SelectOptionDeprecated key={option.value}
                                                                             value={option.label} />)}
-                </Select>
+                </SelectDeprecated>
             </ToolbarFilter>
             <ToolbarFilter chips={filters.fileState}
                            deleteChip={onDeleteChip}
                            deleteChipGroup={onDeleteChipGroup}
                            categoryName={_("File state")}>
-                <Select aria-label={_("File state")}
+                <SelectDeprecated aria-label={_("File state")}
                         toggleId="services-dropdown-file-state"
-                        variant={SelectVariant.checkbox}
+                        variant="checkbox"
                         onToggle={setFileStateFilterIsOpen}
                         onSelect={onFileStateSelect}
                         selections={filters.fileState}
                         isOpen={fileStateFilterIsOpen}
                         placeholderText={_("File state")}>
-                    {fileStateDropdownOptions.map(option => <SelectOption key={option.value}
+                    {fileStateDropdownOptions.map(option => <SelectOptionDeprecated key={option.value}
                                                                           value={option.label} />)}
-                </Select>
+                </SelectDeprecated>
             </ToolbarFilter>
         </ToolbarToggleGroup>
     </>;

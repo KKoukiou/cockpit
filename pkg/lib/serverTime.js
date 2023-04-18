@@ -23,7 +23,7 @@ import { DatePicker } from "@patternfly/react-core/dist/esm/components/DatePicke
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
 import { TimePicker } from "@patternfly/react-core/dist/esm/components/TimePicker/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
@@ -578,39 +578,39 @@ function ChangeSystimeBody({ state, errors, change }) {
     );
 
     const mode_options = [
-        <SelectOption key="manual_time" value="manual_time">{_("Manually")}</SelectOption>,
-        <SelectOption key="ntp_time" value="ntp_time" isDisabled={!ntp_supported}>{_("Automatically using NTP")}</SelectOption>
+        <SelectOptionDeprecated key="manual_time" value="manual_time">{_("Manually")}</SelectOptionDeprecated>,
+        <SelectOptionDeprecated key="ntp_time" value="ntp_time" isDisabled={!ntp_supported}>{_("Automatically using NTP")}</SelectOptionDeprecated>
     ];
 
     if (custom_ntp.backend)
         mode_options.push(
-            <SelectOption key="ntp_time_custom" value="ntp_time_custom" isDisabled={!ntp_supported}>
+            <SelectOptionDeprecated key="ntp_time_custom" value="ntp_time_custom" isDisabled={!ntp_supported}>
                 { custom_ntp.backend == "chronyd"
                     ? _("Automatically using additional NTP servers")
                     : _("Automatically using specific NTP servers")
                 }
-            </SelectOption>);
+            </SelectOptionDeprecated>);
 
     return (
         <Form isHorizontal>
             <FormGroup fieldId="systime-timezones" label={_("Time zone")}>
                 <Validated errors={errors} error_key="time_zone">
-                    <Select id="systime-timezones" variant={SelectVariant.typeahead}
+                    <SelectDeprecated id="systime-timezones" variant="typeahead"
                             isOpen={zonesOpen} onToggle={setZonesOpen}
                             selections={time_zone}
                             onSelect={(event, value) => { setZonesOpen(false); change("time_zone", value) }}
                             menuAppendTo="parent">
-                        { time_zones.map(tz => <SelectOption key={tz} value={tz}>{tz.replaceAll("_", " ")}</SelectOption>) }
-                    </Select>
+                        { time_zones.map(tz => <SelectOptionDeprecated key={tz} value={tz}>{tz.replaceAll("_", " ")}</SelectOptionDeprecated>) }
+                    </SelectDeprecated>
                 </Validated>
             </FormGroup>
             <FormGroup fieldId="change_systime" label={_("Set time")} isStack>
-                <Select id="change_systime"
+                <SelectDeprecated id="change_systime"
                         isOpen={modeOpen} onToggle={setModeOpen}
                         selections={mode} onSelect={(event, value) => { setModeOpen(false); change("mode", value) }}
                         menuAppendTo="parent">
                     { mode_options }
-                </Select>
+                </SelectDeprecated>
                 { mode == "manual_time" &&
                     <div id="systime-manual-row">
                         <ValidatedInput errors={errors} error_key="manual_date">

@@ -24,7 +24,7 @@ import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Modal } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 
@@ -96,7 +96,7 @@ export const MacMenu = ({ idPrefix, model, mac, setMAC }) => {
     };
 
     return (
-        <Select createText={_("Use")}
+        <SelectDeprecated createText={_("Use")}
                 isCreatable
                 isOpen={isOpen}
                 menuAppendTo={() => document.body}
@@ -105,15 +105,15 @@ export const MacMenu = ({ idPrefix, model, mac, setMAC }) => {
                 onSelect={onSelect}
                 onToggle={(_event, value) => setIsOpen(value)}
                 selections={optionsMap.find(option => option.value == mac)}
-                variant={SelectVariant.typeahead}
+                variant="typeahead"
                 toggleId={idPrefix + "-mac-input"}
         >
             {optionsMap.map((option, index) => (
-                <SelectOption key={index}
+                <SelectOptionDeprecated key={index}
                               value={option}
                 />
             ))}
-        </Select>
+        </SelectDeprecated>
     );
 };
 

@@ -32,7 +32,7 @@ import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js
 import { LabelGroup } from "@patternfly/react-core/dist/esm/components/LabelGroup/index.js";
 import { Page, PageSection } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Gallery } from "@patternfly/react-core/dist/esm/layouts/Gallery/index.js";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Text, TextVariants } from "@patternfly/react-core/dist/esm/components/Text/index.js";
 import { Breadcrumb, BreadcrumbItem } from "@patternfly/react-core/dist/esm/components/Breadcrumb/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
@@ -445,7 +445,7 @@ export const AccountGroupsSelect = ({ name, loggedIn, groups, setError }) => {
             validated={history.length > 0 ? "warning" : "default"}
         >
             {superuser.allowed
-                ? <Select
+                ? <SelectDeprecated
                    chipGroupComponent={chipGroupComponent()}
                    isDisabled={!superuser.allowed || loading}
                    isOpen={isOpenGroup}
@@ -453,16 +453,16 @@ export const AccountGroupsSelect = ({ name, loggedIn, groups, setError }) => {
                    onToggle={setIsOpenGroup}
                    selections={selected}
                    toggleId="account-groups"
-                   variant={SelectVariant.typeaheadMulti}
+                   variant="typeaheadmulti"
                 >
                     {groups.map((option, index) => (
-                        <SelectOption
+                        <SelectOptionDeprecated
                             isDisabled={option.name == primaryGroupName}
                             key={index}
                             value={option.name}
                         />
                     ))}
-                </Select>
+                </SelectDeprecated>
                 : chipGroupComponent()}
             {(history.length > 0)
                 ? <HelperText className="pf-c-form__helper-text">

@@ -225,7 +225,7 @@ import { DataList, DataListCell, DataListCheck, DataListItem, DataListItemCells,
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { Grid, GridItem } from "@patternfly/react-core/dist/esm/layouts/Grid/index.js";
 import { Radio } from "@patternfly/react-core/dist/esm/components/Radio/index.js";
-import { Select as TypeAheadSelect, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as TypeAheadSelect, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Slider } from "@patternfly/react-core/dist/esm/components/Slider/index.js";
 import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
 import { Split } from "@patternfly/react-core/dist/esm/layouts/Split/index.js";
@@ -577,7 +577,7 @@ const TypeAheadSelectElement = ({ options, change }) => {
 
     return (
         <TypeAheadSelect
-            variant={SelectVariant.typeahead}
+            variant="typeahead"
             isCreatable
             createText={_("Use")}
             id="nfs-path-on-server"
@@ -587,7 +587,7 @@ const TypeAheadSelectElement = ({ options, change }) => {
             onSelect={(event, value) => { setValue(value); change(value) }}
             onClear={() => setValue(false)}
             isDisabled={options.disabled}>
-            {options.choices.map(entry => <SelectOption key={entry} value={entry} />)}
+            {options.choices.map(entry => <SelectOptionDeprecated key={entry} value={entry} />)}
         </TypeAheadSelect>
     );
 };

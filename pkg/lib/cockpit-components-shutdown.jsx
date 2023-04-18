@@ -20,7 +20,7 @@
 import cockpit from "cockpit";
 import React from 'react';
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { Select, SelectOption } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Modal } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { Alert } from "@patternfly/react-core/dist/esm/components/Alert/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
@@ -172,15 +172,15 @@ export class ShutdownModal extends React.Component {
     render() {
         const Dialogs = this.context;
         const options = [
-            <SelectOption value="0" key="0">{_("No delay")}</SelectOption>,
+            <SelectOptionDeprecated value="0" key="0">{_("No delay")}</SelectOptionDeprecated>,
             <Divider key="divider" component="li" />,
-            <SelectOption value="1" key="1">{_("1 minute")}</SelectOption>,
-            <SelectOption value="5" key="5">{_("5 minutes")}</SelectOption>,
-            <SelectOption value="20" key="20">{_("20 minutes")}</SelectOption>,
-            <SelectOption value="40" key="40">{_("40 minutes")}</SelectOption>,
-            <SelectOption value="60" key="60">{_("60 minutes")}</SelectOption>,
+            <SelectOptionDeprecated value="1" key="1">{_("1 minute")}</SelectOptionDeprecated>,
+            <SelectOptionDeprecated value="5" key="5">{_("5 minutes")}</SelectOptionDeprecated>,
+            <SelectOptionDeprecated value="20" key="20">{_("20 minutes")}</SelectOptionDeprecated>,
+            <SelectOptionDeprecated value="40" key="40">{_("40 minutes")}</SelectOptionDeprecated>,
+            <SelectOptionDeprecated value="60" key="60">{_("60 minutes")}</SelectOptionDeprecated>,
             <Divider key="divider-2" component="li" />,
-            <SelectOption value="x" key="x">{_("Specific time")}</SelectOption>
+            <SelectOptionDeprecated value="x" key="x">{_("Specific time")}</SelectOptionDeprecated>
         ];
 
         return (
@@ -200,13 +200,13 @@ export class ShutdownModal extends React.Component {
                         </FormGroup>
                         <FormGroup fieldId="delay" label={_("Delay")}>
                             <Flex className="shutdown-delay-group" alignItems={{ default: 'alignItemsCenter' }}>
-                                <Select toggleId="delay" isOpen={this.state.isOpen} selections={this.state.selected}
+                                <SelectDeprecated toggleId="delay" isOpen={this.state.isOpen} selections={this.state.selected}
                                         isDisabled={!this.state.formFilled}
                                         className='shutdown-select-delay'
                                         onToggle={(_event, o) => this.setState({ isOpen: o })} menuAppendTo="parent"
                                         onSelect={(e, s) => this.setState({ selected: s, isOpen: false }, this.calculate)}>
                                     {options}
-                                </Select>
+                                </SelectDeprecated>
                                 {this.state.selected === "x" && <>
                                     <DatePicker aria-label={_("Pick date")}
                                                 buttonAriaLabel={_("Toggle date picker")}

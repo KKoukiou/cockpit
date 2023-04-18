@@ -31,7 +31,7 @@ import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/ind
 import { Page, PageSection, PageSectionVariants } from "@patternfly/react-core/dist/esm/components/Page/index.js";
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
 import { SearchInput } from "@patternfly/react-core/dist/esm/components/SearchInput/index.js";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import { Stack } from "@patternfly/react-core/dist/esm/layouts/Stack/index.js";
 import { Toolbar, ToolbarContent, ToolbarGroup, ToolbarItem, ToolbarToggleGroup } from "@patternfly/react-core/dist/esm/components/Toolbar/index.js";
 import {
@@ -190,7 +190,7 @@ export const LogsPage = () => {
                         <ToolbarToggleGroup className="pf-u-flex-wrap pf-u-flex-grow-1" toggleIcon={<><span className="pf-c-button__icon pf-m-start"><FilterIcon /></span>{_("Toggle filters")}</>} breakpoint="md">
                             <ToolbarGroup>
                                 <ToolbarItem>
-                                    <Select toggleId="logs-predefined-filters"
+                                    <SelectDeprecated toggleId="logs-predefined-filters"
                                             isOpen={isOpenTimeFilter}
                                             onToggle={setIsOpenTimeFilter}
                                             onSelect={(e, selection) => {
@@ -199,16 +199,16 @@ export const LogsPage = () => {
                                             }}
                                             selections={timeFilter}
                                             placeholderText={_("Time")}>
-                                        {timeFilterOptions.map(option => <SelectOption key={option.value}
+                                        {timeFilterOptions.map(option => <SelectOptionDeprecated key={option.value}
                                                                                        value={option} />)}
-                                    </Select>
+                                    </SelectDeprecated>
                                 </ToolbarItem>
 
                                 <ToolbarItem variant="label">
                                     {_("Priority")}
                                 </ToolbarItem>
                                 <ToolbarItem>
-                                    <Select toggleId="journal-prio-menu"
+                                    <SelectDeprecated toggleId="journal-prio-menu"
                                             isOpen={isOpenPrioFilter}
                                             onToggle={setIsOpenPrioFilter}
                                             onSelect={(e, selection) => {
@@ -216,8 +216,8 @@ export const LogsPage = () => {
                                                 onJournalPrioChange(selection.value);
                                             }}
                                             selections={journalPrio}>
-                                        {journalPrioOptions.map(option => <SelectOption key={option.value} value={option} />)}
-                                    </Select>
+                                        {journalPrioOptions.map(option => <SelectOptionDeprecated key={option.value} value={option} />)}
+                                    </SelectDeprecated>
                                 </ToolbarItem>
 
                                 <ToolbarItem variant="label">
@@ -289,23 +289,23 @@ const IdentifiersFilter = ({ identifiersFilter, onIdentifiersFilterChange, curre
     let identifiersArray;
     if (currentIdentifiers !== undefined) {
         identifiersArray = [
-            <SelectOption key="all" value={_("All")} />,
+            <SelectOptionDeprecated key="all" value={_("All")} />,
             <Divider component="li" key="divider" />
         ];
         identifiersArray = identifiersArray.concat(
             Array.from(currentIdentifiers)
                     .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-                    .map(unit => <SelectOption key={unit} value={unit} />)
+                    .map(unit => <SelectOptionDeprecated key={unit} value={unit} />)
         );
     } else {
         identifiersArray = [
-            <SelectOption key={identifiersFilter} value={identifiersFilter} isDisabled />
+            <SelectOptionDeprecated key={identifiersFilter} value={identifiersFilter} isDisabled />
         ];
     }
 
     /* The noResultsFoundText is not shown because of https://github.com/patternfly/patternfly-react/issues/6005 */
     return (
-        <Select {...(currentIdentifiers === undefined && { loadingVariant: 'spinner' })}
+        <SelectDeprecated {...(currentIdentifiers === undefined && { loadingVariant: 'spinner' })}
                 onToggle={setIsOpenIdentifiersFilter}
                 onSelect={(e, selection) => {
                     setIsOpenIdentifiersFilter(false);
@@ -319,9 +319,9 @@ const IdentifiersFilter = ({ identifiersFilter, onIdentifiersFilterChange, curre
                 }}
                 selections={identifiersFilter}
                 typeAheadAriaLabel={_("Select a identifier")}
-                variant={SelectVariant.typeahead}>
+                variant="typeahead">
             {identifiersArray}
-        </Select>
+        </SelectDeprecated>
     );
 };
 

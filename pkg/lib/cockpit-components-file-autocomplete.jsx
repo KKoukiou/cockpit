@@ -19,7 +19,7 @@
 
 import cockpit from "cockpit";
 import React from "react";
-import { Select, SelectOption, SelectVariant } from "@patternfly/react-core/dist/esm/components/Select/index.js";
+import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
 import PropTypes from "prop-types";
 import { debounce } from 'throttle-debounce';
 
@@ -167,12 +167,12 @@ export class FileAutoComplete extends React.Component {
         const placeholder = this.props.placeholder || _("Path to file");
 
         const selectOptions = this.state.displayFiles
-                .map(option => <SelectOption key={option.path}
+                .map(option => <SelectOptionDeprecated key={option.path}
                                              className={option.type}
                                              value={option.path} />);
         return (
-            <Select
-                variant={SelectVariant.typeahead}
+            <SelectDeprecated
+                variant="typeahead"
                 id={this.props.id}
                 isInputValuePersisted
                 onTypeaheadInputChanged={this.debouncedChange}
@@ -192,7 +192,7 @@ export class FileAutoComplete extends React.Component {
                 onCreateOption={this.onCreateOption}
                 menuAppendTo="parent">
                 {selectOptions}
-            </Select>
+            </SelectDeprecated>
         );
     }
 }
