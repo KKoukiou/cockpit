@@ -23,7 +23,7 @@ import React from 'react';
 import { Bullseye } from "@patternfly/react-core/dist/esm/layouts/Bullseye/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
-import { Select as SelectDeprecated, SelectOption as SelectOptionDeprecated } from "@patternfly/react-core/dist/esm/deprecated/components/Select/index.js";
+import { FormSelect, FormSelectOption } from "@patternfly/react-core/dist/esm/components/FormSelect/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
@@ -48,7 +48,7 @@ function AccountCreateBody({ state, errors, change, shells }) {
     const {
         real_name, user_name,
         locked, change_passw_force,
-        shell, isShellSelectExpanded,
+        shell,
     } = state;
 
     // We want to let user know that password and confirmation password do not match without them having to constantly click on "Create" to validate the form.
@@ -92,16 +92,13 @@ function AccountCreateBody({ state, errors, change, shells }) {
 
             <FormGroup label={_("Shell")}
                        fieldId="accounts-create-user-shell">
-                <SelectDeprecated variant="sigle"
-                        toggleId="accounts-create-user-shell"
-                        onToggle={(_event, statusIsExpanded) => change("isShellSelectExpanded", statusIsExpanded)}
-                        onSelect={(event, selection) => { change("shell", selection); change("isShellSelectExpanded", false) }}
-                        selections={shell}
-                        isOpen={isShellSelectExpanded}
-                        aria-labelledby="vm-state-select"
-                        menuAppendTo="parent">
-                    { shells.map(shell_path => <SelectOptionDeprecated value={shell_path} key={shell_path} label={shell_path}>{shell_path}</SelectOptionDeprecated>) }
-                </SelectDeprecated>
+                <FormSelect
+                        data-selected={shell}
+                        id="accounts-create-user-shell"
+                        onChange={selection => { change("shell", selection) }}
+                        value={shell}>
+                    { shells.map(shell_path => <FormSelectOption key={shell_path} value={shell_path} label={shell_path} />) }
+                </FormSelect>
             </FormGroup>
 
             <FormGroup label={_("User ID")}
@@ -281,7 +278,6 @@ export function account_create_dialog(accounts, min_uid, max_uid, shells) {
         max_uid,
         home_dir: null,
         home_dir_dirty: false,
-        isShellSelectExpanded: false,
     };
     let errors = { };
 
