@@ -19,9 +19,8 @@
 
 import React from "react";
 import PropTypes from 'prop-types';
-import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
-import { EmptyState, EmptyStateBody, EmptyStateFooter, EmptyStateIcon, EmptyStateVariant } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
+import { EmptyStateActions, EmptyState, EmptyStateBody, EmptyStateFooter, EmptyStateHeader, EmptyStateIcon, EmptyStateVariant } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
 import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
 import "./cockpit-components-empty-state.css";
 

@@ -137,6 +137,15 @@ export const NetworkPage = ({ privileged, operationInProgress, usage_monitor, pl
     const url = "/system/logs/#/?prio=debug&_SYSTEMD_UNIT=NetworkManager.service,firewalld.service";
     /* End of properties for the LogsPanel component */
 
+    const actions = privileged && (
+        <>
+            <NetworkAction buttonText={_("Add bond")} type='bond' />
+            <NetworkAction buttonText={_("Add team")} type='team' />
+            <NetworkAction buttonText={_("Add bridge")} type='bridge' />
+            <NetworkAction buttonText={_("Add VLAN")} type='vlan' />
+        </>
+    );
+
     return (
         <Page data-test-wait={operationInProgress} id="networking">
             <PageSection id="networking-graphs" className="networking-graphs" variant={PageSectionVariants.light}>
@@ -170,14 +179,8 @@ export const NetworkPage = ({ privileged, operationInProgress, usage_monitor, pl
                         </CardBody>
                     </Card>}
                     <Card id="networking-interfaces">
-                        <CardHeader>
+                        <CardHeader actions={{ actions }}>
                             <CardTitle><Text component={TextVariants.h2}>{_("Interfaces")}</Text></CardTitle>
-                            {privileged && <CardActions>
-                                <NetworkAction buttonText={_("Add bond")} type='bond' />
-                                <NetworkAction buttonText={_("Add team")} type='team' />
-                                <NetworkAction buttonText={_("Add bridge")} type='bridge' />
-                                <NetworkAction buttonText={_("Add VLAN")} type='vlan' />
-                            </CardActions>}
                         </CardHeader>
                         <ListingTable aria-label={_("Managed interfaces")}
                                       variant='compact'

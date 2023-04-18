@@ -112,17 +112,16 @@ export function AuthorizedKeys({ name, home, allow_mods }) {
     else
         return null;
 
+    const actions = allow_mods && (
+        <Button variant="secondary" id="authorized-key-add" onClick={() => add_authorized_key_dialog(manager)}>
+            {_("Add key")}
+        </Button>
+    );
+
     return (
         <Card id="account-authorized-keys">
-            <CardHeader>
+            <CardHeader actions={{ actions }}>
                 <CardTitle><Text component={TextVariants.h2}>{_("Authorized public SSH keys")}</Text></CardTitle>
-                { allow_mods &&
-                <CardActions>
-                    <Button variant="secondary" id="authorized-key-add" onClick={() => add_authorized_key_dialog(manager)}>
-                        {_("Add key")}
-                    </Button>
-                </CardActions>
-                }
             </CardHeader>
             <ListingTable
                 aria-label={ _("Authorized public SSH keys") }

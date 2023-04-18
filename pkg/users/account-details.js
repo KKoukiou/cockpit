@@ -25,7 +25,7 @@ import { apply_modal_dialog } from "cockpit-components-dialog.jsx";
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Checkbox } from "@patternfly/react-core/dist/esm/components/Checkbox/index.js";
 import { Card, CardBody, CardHeader, CardTitle } from '@patternfly/react-core/dist/esm/components/Card/index.js';
-import { EmptyState, EmptyStateFooter, EmptyStateIcon, EmptyStateSecondaryActions, EmptyStateVariant } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
+import { EmptyState, EmptyStateActions, EmptyStateFooter, EmptyStateHeader, EmptyStateIcon, EmptyStateVariant } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
 import { HelperText, HelperTextItem } from "@patternfly/react-core/dist/esm/components/HelperText/index.js";
 import { Label } from "@patternfly/react-core/dist/esm/components/Label/index.js";
@@ -38,7 +38,6 @@ import { Breadcrumb, BreadcrumbItem } from "@patternfly/react-core/dist/esm/comp
 import { Form, FormGroup } from "@patternfly/react-core/dist/esm/components/Form/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { Spinner } from "@patternfly/react-core/dist/esm/components/Spinner/index.js";
-import { Title } from "@patternfly/react-core/dist/esm/components/Title/index.js";
 import { Popover } from "@patternfly/react-core/dist/esm/components/Popover/index.js";
 import { ExclamationCircleIcon, HelpIcon, UndoIcon } from '@patternfly/react-icons';
 import { show_unexpected_error } from "./dialog-utils.js";
@@ -225,6 +224,20 @@ export function AccountDetails({ accounts, groups, shadow, current_user, user })
     else
         last_login = timeformat.dateTime(new Date(account.lastLogin));
 
+    const actions = superuser.allowed && (
+        <>
+            <Button variant="secondary" onClick={() => logout_account()} id="account-logout"
+              isDisabled={!account.loggedIn || account.uid == 0}>
+                {_("Terminate session")}
+            </Button>
+            { "\n" }
+            <Button isDisabled={account.uid == 0} variant="danger" id="account-delete"
+                  onClick={() => delete_account_dialog(account)}>
+                {_("Delete")}
+            </Button>
+        </>
+    );
+
     return (
         <Page groupProps={{ sticky: 'top' }}
               isBreadcrumbGrouped
@@ -237,21 +250,8 @@ export function AccountDetails({ accounts, groups, shadow, current_user, user })
             <PageSection>
                 <Gallery hasGutter>
                     <Card className="account-details" id="account-details">
-                        <CardHeader>
+                        <CardHeader actions={{ actions }}>
                             <CardTitle id="account-title"><Text component={TextVariants.h2}>{title_name}</Text></CardTitle>
-                            { superuser.allowed &&
-                            <CardActions>
-                                <Button variant="secondary" onClick={() => logout_account()} id="account-logout"
-                                  isDisabled={!account.loggedIn || account.uid == 0}>
-                                    {_("Terminate session")}
-                                </Button>
-                                { "\n" }
-                                <Button isDisabled={account.uid == 0} variant="danger" id="account-delete"
-                                      onClick={() => delete_account_dialog(account)}>
-                                    {_("Delete")}
-                                </Button>
-                            </CardActions>
-                            }
                         </CardHeader>
                         <CardBody>
                             <Form isHorizontal onSubmit={apply_modal_dialog}>

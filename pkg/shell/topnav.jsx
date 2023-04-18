@@ -182,7 +182,7 @@ export class TopNav extends React.Component {
             </div>,
             <DropdownSeparatorDeprecated key="separator2" className="mobile_v" />,
             <DropdownGroupDeprecated label={_("Style")} key="dark-switcher">
-                <DropdownItem key="dark-switcher-menu" component="div" isPlainText>
+                <DropdownItemDeprecated key="dark-switcher-menu" component="div" isPlainText>
                     <ToggleGroup key="dark-switcher-togglegroup">
                         <ToggleGroupItem key="dark-switcher-auto" buttonId="auto" text={_("Default")}
                                 isSelected={this.state.theme === "auto"}
@@ -194,7 +194,7 @@ export class TopNav extends React.Component {
                                 isSelected={this.state.theme === "dark"}
                                 onChange={this.handleModeClick} />
                     </ToggleGroup>
-                </DropdownItem>
+                </DropdownItemDeprecated>
             </DropdownGroupDeprecated>,
             <DropdownSeparatorDeprecated key="separatorDark" />,
         ];
@@ -269,7 +269,7 @@ export class TopNav extends React.Component {
                                         document.getElementById("toggle-menu").focus();
                                     }}
                                     toggle={
-                                        <DropdownToggleDeprecated id="toggle-menu" icon={<CogIcon size="md" />} onToggle={(_event, isOpen, ev) => this.setState({ menuOpened: isOpen, showActivePages: ev.altKey }) }>
+                                        <DropdownToggleDeprecated id="toggle-menu" icon={<CogIcon size="md" />} onToggle={(_event, isOpen) => this.setState({ menuOpened: isOpen, showActivePages: _event.altKey }) }>
                                             {_("Session")}
                                         </DropdownToggleDeprecated>
                                     }

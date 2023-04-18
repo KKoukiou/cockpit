@@ -166,11 +166,12 @@ export class LogsPanel extends React.Component {
     }
 
     render() {
+        const actions = (this.state.logs.length > 0 && this.props.goto_url) && <Button variant="secondary" onClick={e => cockpit.jump(this.props.goto_url)}>{_("View all logs")}</Button>;
+
         return (
             <Card className="cockpit-log-panel">
-                <CardHeader>
+                <CardHeader actions={{ actions }}>
                     <CardTitle>{this.props.title}</CardTitle>
-                    { (this.state.logs.length > 0 && this.props.goto_url) && <CardActions><Button variant="secondary" onClick={e => cockpit.jump(this.props.goto_url)}>{_("View all logs")}</Button></CardActions>}
                 </CardHeader>
                 <CardBody className={(!this.state.logs.length && this.props.emptyMessage.length) ? "empty-message" : "contains-list"}>
                     { this.state.logs.length ? this.state.logs : this.props.emptyMessage }

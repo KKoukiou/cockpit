@@ -23,7 +23,7 @@ import { AboutModal } from "@patternfly/react-core/dist/esm/components/AboutModa
 import { Button } from "@patternfly/react-core/dist/esm/components/Button/index.js";
 import { Divider } from "@patternfly/react-core/dist/esm/components/Divider/index.js";
 import { Flex } from "@patternfly/react-core/dist/esm/layouts/Flex/index.js";
-import { Menu, MenuContent, MenuSearch, MenuItem, MenuList } from "@patternfly/react-core/dist/esm/components/Menu/index.js";
+import { Menu, MenuContent, MenuSearch, MenuSearchInput, MenuItem, MenuList } from "@patternfly/react-core/dist/esm/components/Menu/index.js";
 import { Modal } from "@patternfly/react-core/dist/esm/components/Modal/index.js";
 import { TextInput } from "@patternfly/react-core/dist/esm/components/TextInput/index.js";
 import { TextContent, TextList, TextListItem } from "@patternfly/react-core/dist/esm/components/Text/index.js";

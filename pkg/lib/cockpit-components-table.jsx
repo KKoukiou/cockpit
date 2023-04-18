@@ -20,10 +20,10 @@
 import React, { useState, useEffect } from 'react';
 import {
     ExpandableRowContent,
-    TableComposable, Thead, Tbody, Tr, Th, Td,
+    Table, Thead, Tbody, Tr, Th, Td,
     SortByDirection,
 } from '@patternfly/react-table';
-import { EmptyState, EmptyStateBody, EmptyStateFooter, EmptyStateSecondaryActions } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
+import { EmptyState, EmptyStateBody, EmptyStateFooter, EmptyStateActions } from "@patternfly/react-core/dist/esm/components/EmptyState/index.js";
 import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/esm/components/Text/index.js";
 
 import './cockpit-components-table.scss';
@@ -258,7 +258,7 @@ export const ListingTable = ({
     return (
         <>
             {header}
-            <TableComposable {...extraProps} {...tableProps}>
+            <Table {...extraProps} {...tableProps}>
                 {showHeader && <Thead>
                     <Tr>
                         {isExpandable && <Th />}
@@ -293,7 +293,7 @@ export const ListingTable = ({
                     </Tr>
                 </Thead>}
                 {!isExpandable ? <Tbody>{rowsComponents}</Tbody> : rowsComponents}
-            </TableComposable>
+            </Table>
         </>
     );
 };

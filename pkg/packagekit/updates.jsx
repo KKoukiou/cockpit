@@ -961,8 +961,7 @@ class CardsPage extends React.Component {
         return cardContents.map(card => {
             return (
                 <Card key={card.id} className={card.className} id={card.id}>
-                    <CardHeader>
-                        {card.actions && <CardActions>{card.actions}</CardActions>}
+                    <CardHeader actions={{ actions: card.actions }}>
                         <CardTitle><h2>{card.title}</h2></CardTitle>
                     </CardHeader>
                     <CardBody className={card.containsList ? "contains-list" : null}>

@@ -190,8 +190,10 @@ function ZoneSection(props) {
         </Button>
     );
 
+    const actions = !firewall.readonly && <div className="zone-section-buttons">{addServiceAction}{deleteButton}</div>;
+
     return <Card className="zone-section" data-id={props.zone.id}>
-        <CardHeader className="zone-section-heading">
+        <CardHeader actions={{ actions }} className="zone-section-heading">
             <CardTitle>
                 <Flex alignItems={{ default: 'alignSelfBaseline' }} spaceItems={{ default: 'spaceItemsXl' }}>
                     <Title headingLevel="h2" size="xl">
@@ -209,7 +211,6 @@ function ZoneSection(props) {
                     </Flex>
                 </Flex>
             </CardTitle>
-            { !firewall.readonly && <CardActions className="zone-section-buttons">{addServiceAction}{deleteButton}</CardActions> }
         </CardHeader>
         {(props.zone.services.length > 0 || props.zone.ports.length > 0) &&
         <CardBody className="contains-list">

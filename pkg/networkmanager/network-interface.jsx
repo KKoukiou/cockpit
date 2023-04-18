@@ -709,13 +709,17 @@ export const NetworkInterfacePage = ({
                 <Gallery hasGutter>
                     <Card className="network-interface-details">
                         <CardHeader actions={{
-                            actions: <>{isDeletable && isManaged &&
-                            <Button variant="danger"
-                                         onClick={syn_click(model, deleteConnections)}
-                                         id="network-interface-delete">
-                                {_("Delete")}
-                            </Button>}
-                            {onoff}</>,
+                            actions: (
+                                <>
+                                    {isDeletable && isManaged &&
+                                    <Button variant="danger"
+                                                 onClick={syn_click(model, deleteConnections)}
+                                                 id="network-interface-delete">
+                                        {_("Delete")}
+                                    </Button>}
+                                    {onoff}
+                                </>
+                            ),
                             hasNoOffset: false,
                             className: undefined
                         }}>

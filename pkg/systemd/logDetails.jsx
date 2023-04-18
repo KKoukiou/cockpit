@@ -47,20 +47,17 @@ const LogDetails = ({ entry }) => {
     if (["service", "target", "socket", "timer", "path"].indexOf(service.split(".").slice(-1)[0]) === -1)
         service = undefined;
 
+    const actions = service && (
+        <Button variant="link" onClick={() => cockpit.jump("/system/services#/" + service + (is_user ? "?owner=user" : "")) }>
+            {cockpit.format(_("Go to $0"), service)}
+        </Button>
+    );
+
     return (
         <GalleryItem>
             <Card>
-                <CardHeader>
-
+                <CardHeader actions={{ actions }}>
                     <h2 id="entry-heading">{id}</h2>
-
-                    { service &&
-                        <CardActions>
-                            <Button variant="link" onClick={() => cockpit.jump("/system/services#/" + service + (is_user ? "?owner=user" : "")) }>
-                                {cockpit.format(_("Go to $0"), service)}
-                            </Button>
-                        </CardActions>
-                    }
                 </CardHeader>
                 <CardTitle>{journal.printable(entry.MESSAGE)}</CardTitle>
                 <CardBody>
