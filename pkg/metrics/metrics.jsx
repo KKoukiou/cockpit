@@ -218,14 +218,17 @@ function decompress_samples(samples, state) {
     });
 }
 
-function make_rows(rows, rowWrapper) {
+function make_rows(rows, rowWrapper, columns) {
     return rows.map((columns, rowIndex) => {
         const props = rowWrapper ? rowWrapper(columns) : {};
+
         return (
             <Tr key={"row-" + rowIndex} {...props}>
                 {columns.map((column, columnIndex) => {
+                    const dataLabel = columns && columns[columnIndex];
+
                     return (
-                        <Td key={"column-" + columnIndex}>
+                        <Td data-label={dataLabel} key={"column-" + columnIndex}>
                             {column}
                         </Td>
                     );
@@ -679,6 +682,7 @@ class CurrentMetrics extends React.Component {
 
         let allDisks = null;
         const rowWrapperDisks = row => ({ 'device-name': row[0] });
+        const diskColumns = [_("Device"), _("Read"), _("Write")];
         if (disksUsage.length > 1) {
             const disksTableContent = (
                 <Table
@@ -687,14 +691,10 @@ class CurrentMetrics extends React.Component {
                     borders={false}
                     aria-label={ _("Disks usage") }>
                     <Thead>
-                        <Tr>
-                            <Th>{_("Device")}</Th>
-                            <Th>{_("Read")}</Th>
-                            <Th>{_("Write")}</Th>
-                        </Tr>
+                        <Tr>{diskColumns.map(col => <Th>{col}</Th>)}</Tr>
                     </Thead>
                     <Tbody className="pf-m-tabular-nums disks-nowrap">
-                        {make_rows(disksUsage, rowWrapperDisks)}
+                        {make_rows(disksUsage, rowWrapperDisks, diskColumns)}
                     </Tbody>
                 </Table>
             );
@@ -707,6 +707,10 @@ class CurrentMetrics extends React.Component {
         }
 
         const rowWrapperIface = row => ({ 'data-interface': row[0] });
+        const topServicesCPUColumns = [_("Service"), "%"];
+        const topServicesMemoryColumns = [_("Service"), _("Used")];
+        const ifaceColumns = [_("Interface"), _("In"), _("Out")];
+
         return (
             <Gallery className="current-metrics" hasGutter>
                 <Card id="current-metrics-card-cpu">
@@ -764,7 +768,7 @@ class CurrentMetrics extends React.Component {
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    {make_rows(this.state.topServicesCPU)}
+                                    {make_rows(this.state.topServicesCPU, undefined, topServicesCPUColumns)}
                                 </Tbody>
                             </Table> }
                     </CardBody>
@@ -802,7 +806,7 @@ class CurrentMetrics extends React.Component {
                                     </Tr>
                                 </Thead>
                                 <Tbody>
-                                    {make_rows(this.state.topServicesMemory)}
+                                    {make_rows(this.state.topServicesMemory, undefined, topServicesMemoryColumns)}
                                 </Tbody>
                             </Table> }
                     </CardBody>
@@ -864,14 +868,10 @@ class CurrentMetrics extends React.Component {
                             borders={false}
                             aria-label={ _("Network usage") }>
                             <Thead>
-                                <Tr>
-                                    <Th>{_("Interface")}</Th>
-                                    <Th>{_("In")}</Th>
-                                    <Th>{_("Out")}</Th>
-                                </Tr>
+                                <Tr>{ifaceColumns.map(col => <Th>{col}</Th>)}</Tr>
                             </Thead>
                             <Tbody className="network-nowrap-shrink">
-                                {make_rows(netIO, rowWrapperIface)}
+                                {make_rows(netIO, rowWrapperIface, ifaceColumns)}
                             </Tbody>
                         </Table>
                     </CardBody>
