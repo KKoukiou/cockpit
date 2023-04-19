@@ -218,15 +218,14 @@ function decompress_samples(samples, state) {
     });
 }
 
-function make_rows(rows, rowWrapper, columns) {
+function make_rows(rows, rowWrapper, _columns) {
     return rows.map((columns, rowIndex) => {
         const props = rowWrapper ? rowWrapper(columns) : {};
 
         return (
             <Tr key={"row-" + rowIndex} {...props}>
                 {columns.map((column, columnIndex) => {
-                    const dataLabel = columns && columns[columnIndex];
-
+                    const dataLabel = _columns && _columns[columnIndex];
                     return (
                         <Td data-label={dataLabel} key={"column-" + columnIndex}>
                             {column}
@@ -691,7 +690,7 @@ class CurrentMetrics extends React.Component {
                     borders={false}
                     aria-label={ _("Disks usage") }>
                     <Thead>
-                        <Tr>{diskColumns.map(col => <Th>{col}</Th>)}</Tr>
+                        <Tr>{diskColumns.map(col => <Th key={col}>{col}</Th>)}</Tr>
                     </Thead>
                     <Tbody className="pf-m-tabular-nums disks-nowrap">
                         {make_rows(disksUsage, rowWrapperDisks, diskColumns)}
@@ -868,7 +867,7 @@ class CurrentMetrics extends React.Component {
                             borders={false}
                             aria-label={ _("Network usage") }>
                             <Thead>
-                                <Tr>{ifaceColumns.map(col => <Th>{col}</Th>)}</Tr>
+                                <Tr>{ifaceColumns.map(col => <Th key={col}>{col}</Th>)}</Tr>
                             </Thead>
                             <Tbody className="network-nowrap-shrink">
                                 {make_rows(netIO, rowWrapperIface, ifaceColumns)}
