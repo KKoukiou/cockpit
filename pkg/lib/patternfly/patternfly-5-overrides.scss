@@ -438,7 +438,7 @@ select.pf-c-form-control {
   }
 
   // Flip submit button icons (they're often arrows or direction related)
-  .pf-c-button > .pf-svg {
+  .pf-c-button > .shows-direction.pf-svg {
     transform: scaleX(-1);
   }
 
