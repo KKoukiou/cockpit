@@ -265,6 +265,27 @@ web browser.
 It offers network configuration, log inspection, diagnostic reports, SELinux
 troubleshooting, interactive command-line sessions, and more.
 
+%post
+# set up dynamic motd/issue symlinks on first-time install; don't bring them back on upgrades if admin removed them
+# The symlinks can be created even if the target file doesn't exist yet - it will be created by cockpit-issue.service
+if [ "$1" = 1 ]; then
+    if [ -f /usr/lib/systemd/system/cockpit.service ]; then
+        mkdir -p /etc/motd.d /etc/issue.d
+        ln -s ../../run/cockpit/issue /etc/motd.d/cockpit 2>/dev/null || true
+        ln -s ../../run/cockpit/issue /etc/issue.d/cockpit.issue 2>/dev/null || true
+    fi
+fi
+
+# on upgrades, adjust motd/issue links to changed target if they still exist (changed in 331)
+if [ "$1" = 2 ]; then
+    if [ "$(readlink /etc/motd.d/cockpit 2>/dev/null)" = "../../run/cockpit/motd" ]; then
+        ln -sfn ../../run/cockpit/issue /etc/motd.d/cockpit
+    fi
+    if [ "$(readlink /etc/issue.d/cockpit.issue 2>/dev/null)" = "../../run/cockpit/motd" ]; then
+        ln -sfn ../../run/cockpit/issue /etc/issue.d/cockpit.issue
+    fi
+fi
+
 %files
 %license COPYING
 %{_docdir}/cockpit/AUTHORS
@@ -412,25 +433,11 @@ authentication via sssd/FreeIPA.
 %{_datadir}/cockpit/branding
 
 %post ws
-# set up dynamic motd/issue symlinks on first-time install; don't bring them back on upgrades if admin removed them
 # disable root login on first-time install; so existing installations aren't changed
 if [ "$1" = 1 ]; then
-    mkdir -p /etc/motd.d /etc/issue.d
-    ln -s ../../run/cockpit/issue /etc/motd.d/cockpit
-    ln -s ../../run/cockpit/issue /etc/issue.d/cockpit.issue
     printf "# List of users which are not allowed to login to Cockpit\n" > /etc/cockpit/disallowed-users
     printf "root\n" >> /etc/cockpit/disallowed-users
     chmod 644 /etc/cockpit/disallowed-users
-fi
-
-# on upgrades, adjust motd/issue links to changed target if they still exist (changed in 331)
-if [ "$1" = 2 ]; then
-    if [ "$(readlink /etc/motd.d/cockpit 2>/dev/null)" = "../../run/cockpit/motd" ]; then
-        ln -sfn ../../run/cockpit/issue /etc/motd.d/cockpit
-    fi
-    if [ "$(readlink /etc/issue.d/cockpit.issue 2>/dev/null)" = "../../run/cockpit/motd" ]; then
-        ln -sfn ../../run/cockpit/issue /etc/issue.d/cockpit.issue
-    fi
 fi
 
 %tmpfiles_create cockpit-ws.conf
